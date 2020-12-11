@@ -36,7 +36,7 @@ int CGame::drawMenu() {
 
     //play music
     if (!isMute) {
-        //PlaySound(TEXT("source\\audio\\PUBG.wav"), NULL, SND_FILENAME);
+        PlaySound(TEXT("source\\audio\\PUBG.wav"), NULL, SND_FILENAME);
     }
     
     //printLogo
