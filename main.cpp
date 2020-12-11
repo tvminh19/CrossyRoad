@@ -15,13 +15,14 @@
     CGame a;
     int mode = a.drawMenu();
     switch (mode){
+        case 1:
+        case 2:
         case 3:
             while (a.settingsGame()==3){}
             break;
         case 4:
             exit(0);
             break;
-
     }
 
      
