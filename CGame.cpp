@@ -1,9 +1,5 @@
 #include "CGame.h"
 
-//some setting for cgame_
-bool CGame::isMute=false;
-int CGame::level=1;
-
 CGame::CGame() {
     //
 }
