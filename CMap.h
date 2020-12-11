@@ -1,12 +1,5 @@
-#ifndef C_MAP
-#define C_MAP
-
-class CMap {
-private:
-
+#pragma once
+class CMap
+{
 };
-
-#endif // !C_MAP
-
-
 
