@@ -1,5 +1,9 @@
 #include "CGame.h"
 
+//some setting for cgame_
+bool CGame::isMute=false;
+int CGame::level=1;
+
 CGame::CGame() {
     //
 }
@@ -31,7 +35,7 @@ void printLogo() {
 
 /* -------------------------------- draw menu ------------------------------- */
 int CGame::drawMenu() {
-    const string mode[5] = { "NEW GAME ","LOADING GAME","RANKING","SETTINGS","EXIT" };
+    const string mode[5] = { "NEW GAME  ","LOADING GAME","RANKING","SETTINGS","EXIT" };
     int arrColor[5] = { 12,7,7,7,7 };
     int pos = 0;
 
@@ -86,7 +90,7 @@ int CGame::drawMenu() {
 
 /* -------------------------------- settings -------------------------------- */
 int CGame::settingsGame(){
-    console->clearScreen();
+    system("cls");
     //prepare
     console->gotoXY(x,y-10);
     int color[3]={12, 7, 7};
@@ -180,4 +184,5 @@ int CGame::settingsGame(){
             cout << choose[i] << endl;
         }
     }
+    return 4;
 }

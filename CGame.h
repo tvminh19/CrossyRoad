@@ -16,8 +16,8 @@ private:
     //CMap map;
     CConsole* console = nullptr;
     bool isRunning = false;
-    bool isMute = false;
-    int level = 1;
+    static bool isMute;
+    static int level;
     //position
     int x = 50;
     int y = 15;

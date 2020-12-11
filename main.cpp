@@ -4,7 +4,7 @@
  int main(){
      //some setting for console screen
      CConsole* console;
-     console->clearScreen();
+     system("cls");
      console->SetWindowSize(150, 150);
      console->SetScreenBufferSize(150, 150);
      console->DisableCtrButton(0, 0, 1);
@@ -17,7 +17,7 @@
      int mode = a.drawMenu();
      switch (mode){
         case 3:
-            a.settingsGame();
+            while (a.settingsGame()==3){}
             break;
         case 4:
             exit(0);
