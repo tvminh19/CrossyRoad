@@ -1,3 +1,4 @@
+#pragma comment(lib, "winmm.lib")
 #ifndef _CGAME_H_
 #define _CGAME_H_
 
