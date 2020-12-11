@@ -3,7 +3,7 @@
 
  int main(){
     //some setting for console screen
-    CConsole* console;
+    CConsole* console=nullptr;
     system("cls");
     console->SetWindowSize(150, 150);
     console->SetScreenBufferSize(150, 150);

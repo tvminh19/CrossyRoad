@@ -1,5 +1,9 @@
 #include "CGame.h"
 
+//some setting for cgame_
+bool CGame::isMute=false;
+int CGame::level=1;
+
 CGame::CGame() {
     //
 }
@@ -91,6 +95,13 @@ int CGame::settingsGame(){
     console->gotoXY(x,y-10);
     int color[3]={12, 7, 7};
     string choose[3]={"MUSIC: ON ", "LEVEL: 1", "EXIT"};
+    if (this->isMute){
+        choose[0]="MUSIC: OFF";
+    }
+    else{
+        choose[0]="MUSIC: ON ";
+    }
+    choose[1]="LEVEL: "+to_string(this->level);
     int pos=0;
 
     //print logo
@@ -119,23 +130,23 @@ int CGame::settingsGame(){
 /* ---------------------------------- music --------------------------------- */
             if (pos==0 && choose[0]=="MUSIC: ON "){
                 choose[0]="MUSIC: OFF";
-                this->isMute=false;
+                CGame::isMute=true;
             }
             else if (pos==0 && choose[0]=="MUSIC: OFF"){
                 choose[0]="MUSIC: ON ";
-                this->isMute=true;
+                CGame::isMute=false;
             }
 
 /* ---------------------------------- level --------------------------------- */
             else if (pos==1){
                 string tmp="";
                 while(char s=_getch()){
-                    if (s=='=' && this->level<7){
+                    if (s=='d' && this->level<7){
                         tmp="LEVEL: ";
                         tmp+=to_string(++this->level);
                         choose[1]=tmp;
                     }
-                    else if (s=='-' && this->level>1){
+                    else if (s=='a' && this->level>1){
                         string tmp="LEVEL: ";
                         tmp+=to_string(--this->level);
                         choose[1]=tmp;
