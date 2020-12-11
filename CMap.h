@@ -1,5 +1,1 @@
-#pragma once
-class CMap
-{
-};
-
+//this is trinh van minh
