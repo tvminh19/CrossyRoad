@@ -1,2 +1,8 @@
 //check lan 4
-//check lan 6
+#ifndef CMAP_H
+#define CMAP_H
+class CMap {
+private:
+};
+
+#endif // !CMAP_H
