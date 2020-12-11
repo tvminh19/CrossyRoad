@@ -19,7 +19,7 @@ private:
     bool isMute = false;
     int level = 1;
     //position
-    int x = 40;
+    int x = 50;
     int y = 15;
 public:
     CGame();
@@ -34,7 +34,7 @@ public:
     void newGame();
     void loadGame();
     void rankings();
-    void settingsGame();
+    int settingsGame();
     void audioSettings(bool& mode);
     void levelSettings(int& _level);
     void exitGame();

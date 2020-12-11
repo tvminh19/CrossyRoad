@@ -6,7 +6,7 @@
 class CConsole {
 public:
     void gotoXY(int x, int y);
-    void cls();
+    void clearScreen();
     void color(int _color);
     void DisableResizeWindow();
     void SetWindowSize(SHORT width, SHORT height);

@@ -12,22 +12,6 @@ void CConsole::color(int _color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), _color);
 }
 
-void CConsole::cls()
-{
-	CONSOLE_SCREEN_BUFFER_INFO	csbiInfo;
-	HANDLE	hConsoleOut;
-	COORD	Home = { 0,0 };
-	DWORD	dummy;
-
-	hConsoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	GetConsoleScreenBufferInfo(hConsoleOut, &csbiInfo);
-
-	FillConsoleOutputCharacter(hConsoleOut, ' ', csbiInfo.dwSize.X * csbiInfo.dwSize.Y, Home, &dummy);
-	csbiInfo.dwCursorPosition.X = 0;
-	csbiInfo.dwCursorPosition.Y = 0;
-	SetConsoleCursorPosition(hConsoleOut, csbiInfo.dwCursorPosition);
-}
-
 void CConsole::DisableResizeWindow() {
 	HWND hWnd = GetConsoleWindow();
 	SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_SIZEBOX);
@@ -85,4 +69,18 @@ void CConsole::ShowScrollbar(BOOL Show)
 void CConsole::DisableSelection(){
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	SetConsoleMode(hStdin, ~ENABLE_QUICK_EDIT_MODE);
+}
+
+void CConsole::clearScreen(){
+	DWORD n; 
+	DWORD size; 
+	COORD coord = {0}; 
+	CONSOLE_SCREEN_BUFFER_INFO csbi; 
+	HANDLE h = GetStdHandle ( STD_OUTPUT_HANDLE ); 
+	GetConsoleScreenBufferInfo ( h, &csbi ); 
+	size = csbi.dwSize.X * csbi.dwSize.Y; 
+	FillConsoleOutputCharacter ( h, TEXT ( ' ' ), size, coord, &n ); 
+	GetConsoleScreenBufferInfo ( h, &csbi ); 
+	FillConsoleOutputAttribute ( h, csbi.wAttributes, size, coord, &n ); 
+	SetConsoleCursorPosition ( h, coord ); 
 }
