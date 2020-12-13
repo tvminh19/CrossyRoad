@@ -1,6 +1,6 @@
 #include "CConsole.h"
 
-void CConsole::gotoXY(int x, int y) {
+void gotoXY(int x, int y) {
 	static HANDLE h = NULL;
 	if (!h)
 		h = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -8,16 +8,16 @@ void CConsole::gotoXY(int x, int y) {
 	SetConsoleCursorPosition(h, c);
 }
 
-void CConsole::color(int _color) {
+void setColor(int _color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), _color);
 }
 
-void CConsole::DisableResizeWindow() {
+void DisableResizeWindow() {
 	HWND hWnd = GetConsoleWindow();
 	SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_SIZEBOX);
 }
 
-void CConsole::SetWindowSize(SHORT width, SHORT height)
+void SetWindowSize(SHORT width, SHORT height)
 {
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -30,7 +30,7 @@ void CConsole::SetWindowSize(SHORT width, SHORT height)
 	SetConsoleWindowInfo(hStdout, 1, &WindowSize);
 }
 
-void CConsole::SetScreenBufferSize(SHORT width, SHORT height)
+void SetScreenBufferSize(SHORT width, SHORT height)
 {
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -41,7 +41,7 @@ void CConsole::SetScreenBufferSize(SHORT width, SHORT height)
 	SetConsoleScreenBufferSize(hStdout, NewSize);
 }
 
-void CConsole::DisableCtrButton(bool Close, bool Min, bool Max)
+void DisableCtrButton(bool Close, bool Min, bool Max)
 {
 	HWND hWnd = GetConsoleWindow();
 	HMENU hMenu = GetSystemMenu(hWnd, false);
@@ -60,18 +60,18 @@ void CConsole::DisableCtrButton(bool Close, bool Min, bool Max)
 	}
 }
 
-void CConsole::ShowScrollbar(BOOL Show)
+void ShowScrollbar(BOOL Show)
 {
 	HWND hWnd = GetConsoleWindow();
 	ShowScrollBar(hWnd, SB_BOTH, Show);
 }
 
-void CConsole::DisableSelection(){
+void DisableSelection(){
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	SetConsoleMode(hStdin, ~ENABLE_QUICK_EDIT_MODE);
 }
 
-void CConsole::clearScreen(){
+void clearScreen(){
 	DWORD n; 
 	DWORD size; 
 	COORD coord = {0}; 

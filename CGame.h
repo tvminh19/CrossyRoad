@@ -14,7 +14,6 @@ using namespace std;
 class CGame {
 private:
     //CMap map;
-    CConsole* console = nullptr;
     bool isRunning = false;
     static bool isMute;
     static int level;

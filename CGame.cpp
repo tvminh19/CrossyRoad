@@ -9,12 +9,11 @@ CGame::CGame() {
 }
 
 CGame::~CGame() {
-    delete console;
+    //
 }
 
 void printLogo() {
     CGame c;
-    CConsole console;
     ifstream in;
     in.open("source\\images\\crossingroad.txt");
     //safe
@@ -27,7 +26,7 @@ void printLogo() {
     while (!in.eof()) {
         string tmp;
         getline(in, tmp);
-        console.gotoXY(c.x - 30, _y++);
+        gotoXY(c.x - 30, _y++);
         cout << tmp << endl;
     }
     in.close();
@@ -50,8 +49,8 @@ int CGame::drawMenu() {
     //print choice
     char key;
     for (int i = 0; i < 5; i++) {
-        console->gotoXY(x, y + i);
-        console->color(arrColor[i]);
+        gotoXY(x, y + i);
+        setColor(arrColor[i]);
         cout << mode[i] << endl;
     }
     while (key = _getch()) {
@@ -75,13 +74,13 @@ int CGame::drawMenu() {
         arrColor[pos] = 12;
 
         //print logo again
-        console->color(1 + rand() % 16);
+        setColor(1 + rand() % 16);
         printLogo();
 
         //print mode to choose
         for (int i = 0; i < 5; i++) {
-            console->gotoXY(x, y + i);
-            console->color(arrColor[i]);
+            gotoXY(x, y + i);
+            setColor(arrColor[i]);
             cout << mode[i] << endl;
         }
     }
@@ -92,7 +91,7 @@ int CGame::drawMenu() {
 int CGame::settingsGame(){
     system("cls");
     //prepare
-    console->gotoXY(x,y-10);
+    gotoXY(x,y-10);
     int color[3]={12, 7, 7};
     string choose[3]={"MUSIC: ON ", "LEVEL: 1", "EXIT"};
     if (this->isMute){
@@ -109,8 +108,8 @@ int CGame::settingsGame(){
 
     //print choices
     for (int i=0; i<3; ++i){
-        console->gotoXY(x,y+i);
-        console->color(color[i]);
+        gotoXY(x,y+i);
+        setColor(color[i]);
         cout<<choose[i]<<endl;
     }
 
@@ -156,12 +155,12 @@ int CGame::settingsGame(){
                     }
                     
                     //print logo
-                    console->color(1 + rand() % 16);
+                    setColor(1 + rand() % 16);
                     printLogo();
 
                     //print choose setting level
-                    console->gotoXY(x, y + 1);
-                    console->color(color[1]);
+                    gotoXY(x, y + 1);
+                    setColor(color[1]);
                     cout << choose[1] << endl;
                 }
             }
@@ -181,13 +180,13 @@ int CGame::settingsGame(){
         color[pos] = 12;
 
         //print logo again
-        console->color(1 + rand() % 16);
+        setColor(1 + rand() % 16);
         printLogo();
 
         //print mode to choose
         for (int i = 0; i < 3; i++) {
-            console->gotoXY(x, y + i);
-            console->color(color[i]);
+            gotoXY(x, y + i);
+            setColor(color[i]);
             cout << choose[i] << endl;
         }
     }
