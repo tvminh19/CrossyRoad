@@ -7,15 +7,15 @@
 #include <string>
 #include <windows.h>
 #include <conio.h>
+#include <vector>
 #include "CMap.h"
 #include "CConsole.h"
 using namespace std;
 
 class CGame {
 private:
-    //CMap map;
-    CConsole* console = nullptr;
-    bool isRunning = false;
+    CMap map;
+    // bool isRunning = false;
     static bool isMute;
     static int level;
     //position
@@ -31,8 +31,8 @@ public:
       3. SETTINGS
       4. EXIT*/
     int drawMenu();
-    void newGame();
-    void loadGame();
+    int newGame();
+    int loadGame();
     void rankings();
     int settingsGame();
     void audioSettings(bool& mode);
@@ -48,6 +48,10 @@ public:
 
     //other supporting function
     friend void printLogo();
+
+    // bool loseMenu();
+    // void pauseMenu();
+    // void saveGame();
 };
 
 

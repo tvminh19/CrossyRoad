@@ -9,12 +9,11 @@ CGame::CGame() {
 }
 
 CGame::~CGame() {
-    delete console;
+    //
 }
 
 void printLogo() {
     CGame c;
-    CConsole console;
     ifstream in;
     in.open("source\\images\\crossingroad.txt");
     //safe
@@ -27,7 +26,7 @@ void printLogo() {
     while (!in.eof()) {
         string tmp;
         getline(in, tmp);
-        console.gotoXY(c.x - 30, _y++);
+        gotoXY(c.x - 30, _y++);
         cout << tmp << endl;
     }
     in.close();
@@ -50,8 +49,8 @@ int CGame::drawMenu() {
     //print choice
     char key;
     for (int i = 0; i < 5; i++) {
-        console->gotoXY(x, y + i);
-        console->color(arrColor[i]);
+        gotoXY(x, y + i);
+        setColor(arrColor[i]);
         cout << mode[i] << endl;
     }
     while (key = _getch()) {
@@ -75,13 +74,13 @@ int CGame::drawMenu() {
         arrColor[pos] = 12;
 
         //print logo again
-        console->color(1 + rand() % 16);
+        setColor(1 + rand() % 16);
         printLogo();
 
         //print mode to choose
         for (int i = 0; i < 5; i++) {
-            console->gotoXY(x, y + i);
-            console->color(arrColor[i]);
+            gotoXY(x, y + i);
+            setColor(arrColor[i]);
             cout << mode[i] << endl;
         }
     }
@@ -92,7 +91,7 @@ int CGame::drawMenu() {
 int CGame::settingsGame(){
     system("cls");
     //prepare
-    console->gotoXY(x,y-10);
+    gotoXY(x,y-10);
     int color[3]={12, 7, 7};
     string choose[3]={"MUSIC: ON ", "LEVEL: 1", "EXIT"};
     if (this->isMute){
@@ -109,8 +108,8 @@ int CGame::settingsGame(){
 
     //print choices
     for (int i=0; i<3; ++i){
-        console->gotoXY(x,y+i);
-        console->color(color[i]);
+        gotoXY(x,y+i);
+        setColor(color[i]);
         cout<<choose[i]<<endl;
     }
 
@@ -156,12 +155,12 @@ int CGame::settingsGame(){
                     }
                     
                     //print logo
-                    console->color(1 + rand() % 16);
+                    setColor(1 + rand() % 16);
                     printLogo();
 
                     //print choose setting level
-                    console->gotoXY(x, y + 1);
-                    console->color(color[1]);
+                    gotoXY(x, y + 1);
+                    setColor(color[1]);
                     cout << choose[1] << endl;
                 }
             }
@@ -181,15 +180,126 @@ int CGame::settingsGame(){
         color[pos] = 12;
 
         //print logo again
-        console->color(1 + rand() % 16);
+        setColor(1 + rand() % 16);
         printLogo();
 
         //print mode to choose
         for (int i = 0; i < 3; i++) {
-            console->gotoXY(x, y + i);
-            console->color(color[i]);
+            gotoXY(x, y + i);
+            setColor(color[i]);
             cout << choose[i] << endl;
         }
     }
     return 4;
+}
+
+/* -------------------------------- new game -------------------------------- */
+// int CGame::newGame(){
+//     /*inside CMap.start
+//     0. pause game => menu => save->return main menu, continue game, exit.
+//     1. win up 1 level 
+//     -1.lose => pause game*/
+//     int stt=map.startGame(this->level);
+//     switch(stt){
+//         case 0:
+//             map.pauseGame();
+//             //print menu
+//             map.continueGame();
+//             break;
+//         case 1:
+//             map.printWin();
+//             this->level++;
+//             return this->newGame();
+//             break;
+//         case -1:
+//             if(this->loseMenu()){
+//                 this->level=1;
+//                 return this->newGame();
+//             }
+//             else{
+//                 //ask for save game
+//                 this->saveGame();
+//                 return this->drawMenu();
+//             }
+//             break;
+//     }
+//     return 0;
+// }
+
+struct user{
+    string name;
+    int level;
+};
+
+void loadFile(ifstream& in, vector<user>& tmp){
+    string a;
+    int level;
+    while (!in.eof()){
+        user k;
+        getline(in, k.name);
+        in>>k.level;
+        in.ignore(100,'\n');
+        tmp.push_back(k);
+    }
+}
+#define amountOfPage 5
+int CGame::loadGame(){
+    system("cls");
+    printLogo();
+    //load file take the lelel
+    //CGame.newGame(int level);
+    vector<user> listUsers;
+    ifstream in;
+    in.open("source\\user.txt");
+    if (in.is_open()){
+        string a;
+        int b;
+        loadFile(in, listUsers);
+        in.close();
+    }
+    else{
+        cout<<"can not open user.txt.\n";
+        exit(0);
+    }
+
+    gotoXY(x,y-2);
+    cout<<"[LOADING GAME].\n";
+    int* color=new int[listUsers.size()];
+    for(int i=0;i<listUsers.size(); ++i){
+        color[i]=7;
+    }
+    color[0]=12;
+    int pos=0;
+    for (int i=0; i<listUsers.size(); i++){
+        gotoXY(x,y+i);
+        setColor(color[i]);
+        cout<<"["<<i<<"]. "<<listUsers[i].name<<" - "<<listUsers[i].level<<endl;
+    }
+    while(char t=_getch()){
+        for(int i=0; i<listUsers.size(); ++i){
+            color[i]=7;
+        }
+        if (t=='w' && pos>0){
+            pos--;
+        }
+        else if (t=='s' && pos<listUsers.size()-1){
+            pos++;
+        }
+        else if (t=='q'){
+            exit(0);
+        }
+        else if (t==13){
+            this->level=listUsers[pos].level;
+            //return newGame();
+            return 0;
+        }
+        color[pos]=12;
+        for (int i=0; i<listUsers.size(); i++){
+            gotoXY(x,y+i);
+            setColor(color[i]);
+            cout<<"["<<i<<"]. "<<listUsers[i].name<<" - "<<listUsers[i].level<<endl;
+        }
+    }
+    delete[] color;
+    return 0;
 }
