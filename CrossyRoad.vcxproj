@@ -141,16 +141,22 @@
   <ItemGroup>
     <ClInclude Include="CConsole.h" />
     <ClInclude Include="CEnemy.h" />
+    <ClInclude Include="CFactory.h" />
+    <ClInclude Include="CFlyweight.h" />
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CMap.h" />
     <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="FactoryContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CConsole.cpp" />
     <ClCompile Include="CEnemy.cpp" />
+    <ClCompile Include="CFactory.cpp" />
+    <ClCompile Include="CFlyweight.cpp" />
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CMap.cpp" />
     <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="FactoryContainer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
