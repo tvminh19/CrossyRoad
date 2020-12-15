@@ -4,7 +4,11 @@
 class CMap {
 private:
 public:
-    
+    CMap();
+    ~CMap();
+    int startGame(int _level);
+    void pauseGame();
+    void continueGame();
 };
 
 #endif // !CMAP_H
