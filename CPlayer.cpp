@@ -1,34 +1,34 @@
-#include "CPlayer.h"
-#include "CEnemy.h"
+// #include "CPlayer.h"
+// #include "CEnemy.h"
 
-CPlayer::CPlayer() :co(0,0), mState(true) {}
+// CPlayer::CPlayer() :co(0,0), mState(true) {}
 
-CPlayer::CPlayer(int x, int y) :co(x,y), mState(true) {}
+// CPlayer::CPlayer(int x, int y) :co(x,y), mState(true) {}
 
-void CPlayer::Up() {
-    
-}
+// void CPlayer::Up() {
 
-void CPlayer::Down() {
+// }
 
-}
+// void CPlayer::Down() {
 
-void CPlayer::Left() {
+// }
 
-}
+// void CPlayer::Left() {
 
-void CPlayer::Right() {
+// }
 
-}
+// void CPlayer::Right() {
 
-bool CPlayer::isFinished() {
+// }
 
-}
+// bool CPlayer::isFinished() {
 
-bool CPlayer::isDead() {
+// }
 
-}
+// bool CPlayer::isDead() {
 
-bool CPlayer::isImpact(const CEnemy* a) {
+// }
 
-}
+// bool CPlayer::isImpact(const CEnemy* a) {
+
+// }

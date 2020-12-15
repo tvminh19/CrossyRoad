@@ -242,7 +242,62 @@ void loadFile(ifstream& in, vector<user>& tmp){
         tmp.push_back(k);
     }
 }
-#define amountOfPage 5
+
+//create menu
+auto createMenu(string nameOfMenu, string str[], int n){
+	int x=50;
+	int y=15;
+	int pos=0;
+	//create array of color
+	int *color=new int[n];
+	
+	//set color to while
+	for(int i=1; i<n; ++i){
+		color[i]=7;
+	}
+	color[0]=12;
+	//print menu
+	gotoXY(x,y-2);
+	cout<<"["<<nameOfMenu<<"]\n";
+	for(int i=0; i<n; ++i){
+		setColor(color[i]);
+		gotoXY(x,y+i);
+		cout<<str[i];
+	}
+	//input key
+	while(char s=_getch()){
+		if(s=='w' && pos>0){
+			pos--;
+		}
+		else if(s=='s' && pos<n-1){
+			pos++;
+		}
+		else if(s=='q'){
+			exit(0);
+		}
+		//s='enter'
+		else if(s==13){
+			return str[pos];
+		}
+		
+		//reset color
+		for(int i=0; i<n; ++i){
+		    color[i]=7;
+		}
+		
+		//mark the choice
+		color[pos]=12;
+		
+		//print again
+		for(int i=0; i<n; ++i){
+            setColor(color[i]);
+			gotoXY(x,y+i);
+			cout<<str[i];
+		}
+	}
+	delete[] color;
+}
+
 int CGame::loadGame(){
     system("cls");
     printLogo();
@@ -260,6 +315,16 @@ int CGame::loadGame(){
     else{
         cout<<"can not open user.txt.\n";
         exit(0);
+    }
+
+    vector<user> tmp;
+    if(listUsers.size()>5){
+        for(int i=0; i<5; ++i){
+            tmp.push_back(listUsers.back());
+            listUsers.pop_back();
+        }
+        listUsers.clear();
+        listUsers=tmp;
     }
 
     gotoXY(x,y-2);
