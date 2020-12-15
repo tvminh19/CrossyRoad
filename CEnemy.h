@@ -8,7 +8,7 @@ struct cPosition
 	int x, y;
 };
 
-class cEnemy
+class CEnemy
 {
 private:
 	Flyweight * shared_state;
@@ -16,7 +16,7 @@ private:
 	cPosition prePos;
 	int direction;
 public:
-	cEnemy(Flyweight* shared_state, cPosition pos, int direction);
+	CEnemy(Flyweight* shared_state, cPosition pos, int direction);
 	bool move(int i);
 	void draw();
 	void makeSound();

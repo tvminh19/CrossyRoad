@@ -1,9 +1,9 @@
 #include "CEnemy.h"
-cEnemy::cEnemy(Flyweight* shared_state, cPosition pos, int direction) : shared_state(shared_state), pos(pos), direction(direction) , prePos(pos)
+CEnemy::CEnemy(Flyweight* shared_state, cPosition pos, int direction) : shared_state(shared_state), pos(pos), direction(direction) , prePos(pos)
 {
 	draw();
 }
-bool cEnemy::move(int speed)
+bool CEnemy::move(int speed)
 {
 	this->prePos.x = this->pos.x;
 	this->pos.x = this->pos.x + direction * speed * shared_state->defaultSpeed;
@@ -20,12 +20,12 @@ bool cEnemy::move(int speed)
 	return 1;
 }
 
-void cEnemy::draw()
+void CEnemy::draw()
 {
 	gotoXY(pos.x, pos.y);
 	std::cout << shared_state->shape;
 }
 
-void cEnemy::makeSound()
+void CEnemy::makeSound()
 {
 }

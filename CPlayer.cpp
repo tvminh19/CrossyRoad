@@ -6,7 +6,7 @@ CPlayer::CPlayer() :co(0,0), mState(true) {}
 CPlayer::CPlayer(int x, int y) :co(x,y), mState(true) {}
 
 void CPlayer::Up() {
-
+    
 }
 
 void CPlayer::Down() {
