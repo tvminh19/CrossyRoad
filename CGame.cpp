@@ -1,5 +1,14 @@
 #include "CGame.h"
 
+//swap
+template<class T>
+void theSwap(T& a, T& b){
+    T c;
+    c=a;
+    a=b;
+    b=c;
+}
+
 //some setting for cgame_
 bool CGame::isMute=false;
 int CGame::level=1;
@@ -366,5 +375,48 @@ int CGame::loadGame(){
         }
     }
     delete[] color;
+    return 0;
+}
+
+/* --------------------------------- ranking -------------------------------- */
+int CGame::rankings(){
+    system("cls");
+    ifstream in;
+    vector<user> listUsers;
+    in.open("source\\user.txt");
+    if (in.is_open()){
+        string a;
+        loadFile(in, listUsers);
+        in.close();
+    }
+    else{
+        cout<<"can not open user.txt.\n";
+        exit(0);
+    }
+    
+    int n=listUsers.size();
+    for (int i=0; i<n-1; ++i){
+        for (int j=i+1; j<n; ++j){
+            if (listUsers[j].level>listUsers[i].level){
+                theSwap(listUsers[j], listUsers[i]);
+            }
+        }
+    }
+    printLogo();
+    gotoXY(x,y-2);
+    cout<<"[RANKING]\n";
+
+    for(int i=0; i<5; ++i){
+        gotoXY(x,y+i);
+        setColor(12);
+        cout<<"["<<i+1<<"]."<<listUsers[i].name<<" - "<<listUsers[i].level;
+    }
+
+    while (char s=_getch()){
+        if (s==13){
+            system("cls");
+            return drawMenu();
+        }
+    }
     return 0;
 }

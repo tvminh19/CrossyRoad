@@ -33,10 +33,8 @@ public:
     int drawMenu();
     int newGame();
     int loadGame();
-    void rankings();
+    int rankings();
     int settingsGame();
-    void audioSettings(bool& mode);
-    void levelSettings(int& _level);
     void exitGame();
 
     //while running game
