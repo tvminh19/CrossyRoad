@@ -7,6 +7,7 @@
 #include <string>
 #include <windows.h>
 #include <conio.h>
+#include <vector>
 #include "CMap.h"
 #include "CConsole.h"
 using namespace std;
@@ -31,7 +32,7 @@ public:
       4. EXIT*/
     int drawMenu();
     int newGame();
-    void loadGame();
+    int loadGame();
     void rankings();
     int settingsGame();
     void audioSettings(bool& mode);

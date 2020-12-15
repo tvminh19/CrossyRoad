@@ -225,8 +225,71 @@ int CGame::newGame(){
     }
 }
 
-void CGame::loadGame(){
+struct user{
+    string name;
+    int level;
+};
+
+void loadFile(ifstream& in, vector<user>& tmp){
+    string a;
+    int level;
+    while (!in.eof()){
+        user k;
+        getline(in, k.name);
+        in>>k.level;
+        in.ignore(100,'\n');
+        tmp.push_back(k);
+    }
+}
+
+int CGame::loadGame(){
     //load file take the lelel
     //CGame.newGame(int level);
-    
+    vector<user> listUsers;
+    ifstream in;
+    in.open("source\\user.txt");
+    if (in.is_open()){
+        string a;
+        int b;
+        loadFile(in, listUsers);
+        in.close();
+    }
+    else{
+        cout<<"can not open user.txt.\n";
+        exit(0);
+    }
+
+    gotoXY(x,y-2);
+    cout<<"[LOADING GAME].\n";
+    int* color=new int[listUsers.size()];
+    for(int i=0;i<listUsers.size(); ++i){
+        color[i]=7;
+    }
+    color[0]=12;
+    int pos=0;
+    for (int i=0; i<listUsers.size(); i++){
+        gotoXY(x,y+i);
+        setColor(color[i]);
+        cout<<"["<<i<<"]. "<<listUsers[i].name<<" - "<<listUsers[i].level<<endl;
+    }
+    while(char t=_getch()){
+        for(int i=0; i<listUsers.size(); ++i){
+            color[i]=7;
+        }
+        if (t=='w' && pos>0){
+            pos--;
+        }
+        else if (t=='s' && pos<listUsers.size()-1){
+            pos++;
+        }
+        else if (t=='q'){
+            exit(0);
+        }
+        else if (t==13){
+            this->level=listUsers[pos].level;
+            return newGame();
+        }
+        color[pos]=12;
+    }
+    delete[] color;
 }
