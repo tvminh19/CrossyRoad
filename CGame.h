@@ -50,6 +50,7 @@ public:
 
     bool loseMenu();
     void pauseMenu();
+    void saveGame();
 };
 
 

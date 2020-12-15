@@ -217,6 +217,8 @@ int CGame::newGame(){
                 return this->newGame();
             }
             else{
+                //ask for save game
+                this->saveGame();
                 return this->drawMenu();
             }
             break;
@@ -226,4 +228,5 @@ int CGame::newGame(){
 void CGame::loadGame(){
     //load file take the lelel
     //CGame.newGame(int level);
+    
 }
