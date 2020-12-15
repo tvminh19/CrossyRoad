@@ -214,7 +214,8 @@ void CGame::newGame(){
         case -1:
             int sttx = CGame.menuLose();
             if (yes){
-                CMap.start(1);
+                level=1;
+                return CGame.newGame(level);
             }
             else{
                 return menu;

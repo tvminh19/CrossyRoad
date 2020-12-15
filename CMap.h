@@ -3,6 +3,8 @@
 #define CMAP_H
 class CMap {
 private:
+public:
+    
 };
 
 #endif // !CMAP_H
