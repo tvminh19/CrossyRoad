@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _CFLYWEIGHT_H_
 #define _CFLYWEIGHT_H_
 

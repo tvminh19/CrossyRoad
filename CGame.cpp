@@ -194,36 +194,37 @@ int CGame::settingsGame(){
 }
 
 /* -------------------------------- new game -------------------------------- */
-int CGame::newGame(){
-    /*inside CMap.start
-    0. pause game => menu => save->return main menu, continue game, exit.
-    1. win up 1 level 
-    -1.lose => pause game*/
-    int stt=map.startGame(this->level);
-    switch(stt){
-        case 0:
-            map.pauseGame();
-            //print menu
-            map.continueGame();
-            break;
-        case 1:
-            map.printWin();
-            this->level++;
-            return this->newGame();
-            break;
-        case -1:
-            if(this->loseMenu()){
-                this->level=1;
-                return this->newGame();
-            }
-            else{
-                //ask for save game
-                this->saveGame();
-                return this->drawMenu();
-            }
-            break;
-    }
-}
+// int CGame::newGame(){
+//     /*inside CMap.start
+//     0. pause game => menu => save->return main menu, continue game, exit.
+//     1. win up 1 level 
+//     -1.lose => pause game*/
+//     int stt=map.startGame(this->level);
+//     switch(stt){
+//         case 0:
+//             map.pauseGame();
+//             //print menu
+//             map.continueGame();
+//             break;
+//         case 1:
+//             map.printWin();
+//             this->level++;
+//             return this->newGame();
+//             break;
+//         case -1:
+//             if(this->loseMenu()){
+//                 this->level=1;
+//                 return this->newGame();
+//             }
+//             else{
+//                 //ask for save game
+//                 this->saveGame();
+//                 return this->drawMenu();
+//             }
+//             break;
+//     }
+//     return 0;
+// }
 
 struct user{
     string name;
@@ -287,9 +288,11 @@ int CGame::loadGame(){
         }
         else if (t==13){
             this->level=listUsers[pos].level;
-            return newGame();
+            //return newGame();
+            return 0;
         }
         color[pos]=12;
     }
     delete[] color;
+    return 0;
 }

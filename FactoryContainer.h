@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _CSINGLETON_H_
 #define _CSINGLETON_H_
 

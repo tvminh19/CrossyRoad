@@ -16,6 +16,8 @@
     switch (mode){
         case 1:
         case 2:
+            a.loadGame();
+            break;
         case 3:
             while (a.settingsGame()==3){}
             break;

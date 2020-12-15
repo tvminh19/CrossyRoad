@@ -49,9 +49,9 @@ public:
     //other supporting function
     friend void printLogo();
 
-    bool loseMenu();
-    void pauseMenu();
-    void saveGame();
+    // bool loseMenu();
+    // void pauseMenu();
+    // void saveGame();
 };
 
 
