@@ -13,7 +13,7 @@ using namespace std;
 
 class CGame {
 private:
-    //CMap map;
+    CMap map;
     // bool isRunning = false;
     static bool isMute;
     static int level;
@@ -30,7 +30,7 @@ public:
       3. SETTINGS
       4. EXIT*/
     int drawMenu();
-    void newGame();
+    int newGame();
     void loadGame();
     void rankings();
     int settingsGame();
@@ -47,6 +47,9 @@ public:
 
     //other supporting function
     friend void printLogo();
+
+    bool loseMenu();
+    void pauseMenu();
 };
 
 

@@ -9,6 +9,8 @@ public:
     int startGame(int _level);
     void pauseGame();
     void continueGame();
+    void printWin();
+    void printLose();
 };
 
 #endif // !CMAP_H

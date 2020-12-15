@@ -194,39 +194,33 @@ int CGame::settingsGame(){
 }
 
 /* -------------------------------- new game -------------------------------- */
-void CGame::newGame(){
-    /*
-    int stt = CMap.start(1);
-    switch(stt){
-        case 0:
-            CGame.pauseGame(){
-                CMap.pause();
-                //print menu
-                switch(){
-                    Cmap.continue();
-                }
-            }
-            break;
-        case 1:
-            CMap.printWin(); // +1 level cho CPlayer
-            CMap.start(level++);
-            break;
-        case -1:
-            int sttx = CGame.menuLose();
-            if (yes){
-                level=1;
-                return CGame.newGame(level);
-            }
-            else{
-                return menu;
-            }
-    }
-    */
+int CGame::newGame(){
     /*inside CMap.start
     0. pause game => menu => save->return main menu, continue game, exit.
     1. win up 1 level 
     -1.lose => pause game*/
-
+    int stt=map.startGame(this->level);
+    switch(stt){
+        case 0:
+            map.pauseGame();
+            //print menu
+            map.continueGame();
+            break;
+        case 1:
+            map.printWin();
+            this->level++;
+            return this->newGame();
+            break;
+        case -1:
+            if(this->loseMenu()){
+                this->level=1;
+                return this->newGame();
+            }
+            else{
+                return this->drawMenu();
+            }
+            break;
+    }
 }
 
 void CGame::loadGame(){
