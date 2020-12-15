@@ -1,8 +1,8 @@
-minh
+MINH
 5
-dat
+DAT
 2
-tuan
+TUAN
 3
-dien
+DIEN
 1

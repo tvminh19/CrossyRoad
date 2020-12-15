@@ -242,8 +242,10 @@ void loadFile(ifstream& in, vector<user>& tmp){
         tmp.push_back(k);
     }
 }
-
+#define amountOfPage 5
 int CGame::loadGame(){
+    system("cls");
+    printLogo();
     //load file take the lelel
     //CGame.newGame(int level);
     vector<user> listUsers;
@@ -292,6 +294,11 @@ int CGame::loadGame(){
             return 0;
         }
         color[pos]=12;
+        for (int i=0; i<listUsers.size(); i++){
+            gotoXY(x,y+i);
+            setColor(color[i]);
+            cout<<"["<<i<<"]. "<<listUsers[i].name<<" - "<<listUsers[i].level<<endl;
+        }
     }
     delete[] color;
     return 0;
