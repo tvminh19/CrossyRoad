@@ -343,3 +343,4 @@ healthchecksdb
 *.pdf
 .vs
 *.exe
+.vscode
