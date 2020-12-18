@@ -40,7 +40,7 @@ void TrafficLane::update(float elapsed, float fGameTime)
 	}
 
 	// time since last car was added to lane
-	m_fTimeSinceSpawn = m_spawnClock.getElapsedTime().asSeconds();
+	m_fTimeSinceSpawn = m_spawnClock.getElapsedTime().asSeconds()-2.f;
 
 	// If the time scince the last spawn is greater than the time needed for the next spawn then spawn a car
 	if (m_fTimeSinceSpawn > m_fNextSpawn ){
@@ -50,7 +50,7 @@ void TrafficLane::update(float elapsed, float fGameTime)
 	}
 
 	// if ther is more than 10 cars in the lane then remove the earliest car to have spawned
-	if (m_vCarsInLane.size() > 10)
+	if (m_vCarsInLane.size() > 7)
 	{
 		m_vCarsInLane.erase(m_vCarsInLane.begin());
 	}
@@ -68,10 +68,10 @@ float TrafficLane::getNextSpawn()
 		fTempLaneSpeed = m_fLaneSpeed;
 	}
 	
-	float fMinTime; 	// Minimum time for a car to spawn
-	float fMaxTime;		// Maximum time for a car to spawn
-	fMinTime = (m_fWidth + 50 ) / fTempLaneSpeed;		// Distance of a vehicle plus size of the player
-	fMaxTime = (m_fWidth  + 50 )/ fTempLaneSpeed * 3;	// Distance of 3 vehicles plus the size of the player
+	float fMinTime=1.f; 	// Minimum time for a car to spawn
+	float fMaxTime=2.f;		// Maximum time for a car to spawn
+	fMinTime = (m_fWidth + 100 ) / fTempLaneSpeed;		// Distance of a vehicle plus size of the player
+	fMaxTime = (m_fWidth  + 100 )/ fTempLaneSpeed * 3;	// Distance of 3 vehicles plus the size of the player
 	return (fMinTime + (float) (rand()) / ( (float) (RAND_MAX / (fMaxTime - fMinTime)))); //Return a float between the min and max times
 }
 
