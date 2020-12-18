@@ -13,6 +13,9 @@
 class TextItem
 {
 public:
+	TextItem(){
+		//
+	}
 	// Constructor for displaying a string at a given posision with a given size
 	TextItem(std::string textString, sf::Vector2f vec2Position, int iSize); 
 	// Constructor for displaying a string label and a int value

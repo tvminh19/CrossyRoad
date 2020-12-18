@@ -1,7 +1,7 @@
 // Author: Mitch Barnett
 // Created: April 2016
 
-#include "movable.h"
+#include "Movable.h"
 
 // Returns the position of the object
 sf::Vector2f Movable::getPosition()

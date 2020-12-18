@@ -22,6 +22,11 @@ private:
     float elapsed;	// Stores the value of the frame time
 	bool cheatMode;
 
+    TextItem textLives;
+	TextItem textMoves;
+	TextItem textTime;
+	TextItem textCheatMode;
+
     //TextItem textLives("Lives: ", player.getLivesLeft(), sf::Vector2f(0,650));	// Creates Lives UI item
 	// TextItem textMoves("Moves: ", player.getMovesTaken(), sf::Vector2f(675, 650));	// Creates Moves UI item
 	// TextItem textTime("Time: ", 0.0f, sf::Vector2f(300, 650));				// Creates Time UI item			

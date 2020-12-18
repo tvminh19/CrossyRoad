@@ -18,11 +18,15 @@ void CGame::pollEvents(){
 }
 
 void CGame::initVariables(){
-   this->score=0;
-   this->elapsed=0.01f;
-   this->cheatMode=false; 
-   player.setPosition(sf::Vector2f(375, 625));
-
+	this->score=0;
+	this->elapsed=0.01f;
+	this->cheatMode=false; 
+	player.setPosition(sf::Vector2f(375, 625));
+	
+	TextItem textLives("Lives: ", player.getLivesLeft(), sf::Vector2f(0,650));	// Creates Lives UI item
+	TextItem textMoves("Moves: ", player.getMovesTaken(), sf::Vector2f(675, 650));	// Creates Moves UI item
+	TextItem textTime("Time: ", 0.0f, sf::Vector2f(300, 650));				// Creates Time UI item			
+	TextItem textCheatMode("Cheatmode on", sf::Vector2f(0, 0), 50); // show text saying cheatmode is on
 }
 
 void CGame::initWindow(){
@@ -51,10 +55,16 @@ CGame::CGame(){
 void CGame::update()
 {
 	this->pollEvents();
-
+	frameClock.restart();
 	//update player, traffic
     this->player.update(event, *window);
     trafficManager.update(elapsed, gameTime);
+
+	// Checks for a collision between the player and traffic objects
+	if (trafficManager.checkCollision(player.getBounds()) && !cheatMode){
+		player.loseLife();	// Decrement the lives
+		player.setPosition(sf::Vector2f(375, 625));
+	}
 }
 
 bool CGame::isRunning(){
@@ -65,21 +75,7 @@ void CGame::render()
 {
 	this->window->clear();
     this->initBackground();
-	//Render stuff
-	// this->player.render(this->window);
-
-	// for (auto i : this->swagBalls)
-	// {
-	// 	i.render(*this->window);
-	// }
-
-	// //Render gui
-	// this->renderGui(this->window);
-
-	// //Render end text
-	// if(this->endGame == true)
-	// 	this->window->draw(this->endGameText);
-    // clear the window with black color for start of drawing a new frame
+	
     window->clear(sf::Color::Black);
 
     // Draw game componenets to the screen
@@ -88,8 +84,8 @@ void CGame::render()
     trafficManager.draw(*window);
 
     // Draw UI elements to the screen
-    // textLives.draw(*window);
-    // textTime.draw(*window);
-    // textMoves.draw(*window);
+    textLives.draw(*window);
+    textTime.draw(*window);
+    textMoves.draw(*window);
 	this->window->display();
 }
