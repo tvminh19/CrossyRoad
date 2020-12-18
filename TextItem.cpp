@@ -6,7 +6,7 @@
 #include <iomanip> // for setting precision
 
 // Creates a text object to display a string
-TextItem::TextItem(std::string textString, sf::Vector2f vec2Position, int iSize)
+void TextItem::setTextItem(std::string textString, sf::Vector2f vec2Position, int iSize)
 {
 	// Set the font
 	m_font.loadFromFile("assets/fonts/arial.ttf");
@@ -19,7 +19,7 @@ TextItem::TextItem(std::string textString, sf::Vector2f vec2Position, int iSize)
 }
 
 // Creates a text object to display a string and int value
-TextItem::TextItem(std::string textString, int iValue, sf::Vector2f vec2Position)
+void TextItem::setTextItem(std::string textString, int iValue, sf::Vector2f vec2Position)
 {
 	// Set the font
 	m_font.loadFromFile("assets/fonts/arial.ttf");
@@ -36,7 +36,7 @@ TextItem::TextItem(std::string textString, int iValue, sf::Vector2f vec2Position
 }
 
 // Creates a text object to display a string  and float value
-TextItem::TextItem(std::string textString, float fValue, sf::Vector2f vec2Position)
+void TextItem::setTextItem(std::string textString, float fValue, sf::Vector2f vec2Position)
 {
 	// Set the font
 	m_font.loadFromFile("assets/fonts/arial.ttf");

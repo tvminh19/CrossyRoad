@@ -23,10 +23,10 @@ void CGame::initVariables(){
 	this->cheatMode=false; 
 	player.setPosition(sf::Vector2f(375, 625));
 	
-	TextItem textLives("Lives: ", player.getLivesLeft(), sf::Vector2f(0,650));	// Creates Lives UI item
-	TextItem textMoves("Moves: ", player.getMovesTaken(), sf::Vector2f(675, 650));	// Creates Moves UI item
-	TextItem textTime("Time: ", 0.0f, sf::Vector2f(300, 650));				// Creates Time UI item			
-	TextItem textCheatMode("Cheatmode on", sf::Vector2f(0, 0), 50); // show text saying cheatmode is on
+	textLives.setTextItem("Lives: ", player.getLivesLeft(), sf::Vector2f(0,650));	// Creates Lives UI item
+	textMoves.setTextItem("Moves: ", player.getMovesTaken(), sf::Vector2f(675, 650));	// Creates Moves UI item
+	textTime.setTextItem("Time: ", 0.0f, sf::Vector2f(300, 650));				// Creates Time UI item			
+	textCheatMode.setTextItem("Cheatmode on", sf::Vector2f(0, 0), 50); // show text saying cheatmode is on
 }
 
 void CGame::initWindow(){
@@ -65,6 +65,11 @@ void CGame::update()
 		player.loseLife();	// Decrement the lives
 		player.setPosition(sf::Vector2f(375, 625));
 	}
+
+	// Updates UI elements
+	textLives.update("Lives: ", player.getLivesLeft());
+	textTime.update("Time: ", gameClock.getElapsedTime().asSeconds());
+	textMoves.update("Moves: ", player.getMovesTaken());
 }
 
 bool CGame::isRunning(){
@@ -73,10 +78,8 @@ bool CGame::isRunning(){
 
 void CGame::render()
 {
-	this->window->clear();
+	this->window->clear(sf::Color::Black);
     this->initBackground();
-	
-    window->clear(sf::Color::Black);
 
     // Draw game componenets to the screen
     background.draw(*window);
