@@ -1,5 +1,12 @@
 #include "CGame.h"
 
+int calcScore(float fTime, int iMoves, int iLives)
+{
+	int iTimeScore = (int)(fTime);		// Converts the float time to and int score
+	return (iTimeScore + iMoves - iLives * 5) + 1;	// Takes all values to return a score
+}
+
+
 void CGame::pollEvents(){
 	//Event polling
 	while (this->window->pollEvent(this->event))
@@ -20,7 +27,6 @@ void CGame::pollEvents(){
 void CGame::initVariables(){
 	this->score=0;
 	this->elapsed=0.01f;
-	this->cheatMode=false; 
 	player.setPosition(sf::Vector2f(375, 625));
 	
 	textLives.setTextItem("Lives: ", player.getLivesLeft(), sf::Vector2f(0,650));	// Creates Lives UI item
@@ -61,7 +67,7 @@ void CGame::update()
     trafficManager.update(elapsed, gameTime);
 
 	// Checks for a collision between the player and traffic objects
-	if (trafficManager.checkCollision(player.getBounds()) && !cheatMode){
+	if (trafficManager.checkCollision(player.getBounds())){
 		player.loseLife();	// Decrement the lives
 		player.setPosition(sf::Vector2f(375, 625));
 	}
@@ -90,5 +96,41 @@ void CGame::render()
     textLives.draw(*window);
     textTime.draw(*window);
     textMoves.draw(*window);
+
+	// Draw a the game over screen if game is lost
+	if (player.getLivesLeft() <= 0)
+	{
+		window->clear(sf::Color::Black);
+		TextItem gameOver;
+		gameOver.setTextItem("Game Over", sf::Vector2f(250, 200), 60);
+		TextItem rToRestart;
+		rToRestart.setTextItem("Press r to restart", sf::Vector2f(300, 400), 30);
+		gameOver.draw(*window);
+		rToRestart.draw(*window);
+	}
+
+	// Draw the game win screen is game is won
+	else if (player.getBounds().intersects(background.m_rectTopPavement.getGlobalBounds())){
+		// Calculate the score
+		// Create UI items for the game over screen
+		TextItem textGameWin;
+		textGameWin.setTextItem("Congratulations", sf::Vector2f(200, 250), 60);
+		TextItem textGameScore;
+		textGameScore.setTextItem("Score:  ", score, sf::Vector2f(350, 320));
+		TextItem textRestart;
+		textRestart.setTextItem("Press r to play again", sf::Vector2f(275, 400), 30);
+
+		// Draw the game over message to the screen
+		window->clear(sf::Color::Black);
+		textGameWin.draw(*window);
+		textGameScore.draw(*window);
+		textRestart.draw(*window);
+		}
+		else
+		{
+			// Calculate the score
+			score = calcScore(gameTime, player.getMovesTaken(), player.getLivesLeft());
+		}
+
 	this->window->display();
 }

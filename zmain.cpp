@@ -7,11 +7,6 @@
 #include "TextItem.h"
 #include "CGame.h"
 
-int calcScore(float fTime, int iMoves, int iLives){
-	int iTimeScore = (int)(fTime);		// Converts the float time to and int score
-	return (iTimeScore + iMoves - iLives * 5) + 1;	// Takes all values to return a score
-}
-
 int main(){
     //Init Game engine
 	CGame game;
