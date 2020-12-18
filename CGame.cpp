@@ -19,6 +19,10 @@ void CGame::pollEvents(){
 		case sf::Event::KeyPressed:
 			if (this->event.key.code == sf::Keyboard::Escape)
 				this->window->close();
+			else if (this->event.key.code == sf::Keyboard::R){
+				player.reset();
+				gameClock.restart();
+			}
 			break;
 		}
 	}
