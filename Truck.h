@@ -6,7 +6,7 @@ class Truck: public Enemy{
 private:
     //
 public:
-    void init(){
+    Truck(){
         this->shape.setPosition(50.0f, 50.0f);
 	    this->shape.setSize(sf::Vector2f(100.0f, 100.0f));
 	    this->shape.setFillColor(sf::Color::Green);

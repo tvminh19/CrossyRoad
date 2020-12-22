@@ -9,8 +9,8 @@
 
 class TrafficLane{
 private:
-    float enemySpawnTimer;
-    float enemySpawnTImerMax=3.f;
+    float enemySpawnTimer=20.f;
+    float enemySpawnTImerMax=20.f;
 
     Bird* bird;
     Car* car;
@@ -24,7 +24,7 @@ public:
         {
             if (this->enemySpawnTimer >= this->enemySpawnTImerMax)
             {
-                this->spawnEnemy();
+                this->spawnEnemy(window);
                 this->enemySpawnTimer = 0.f;
             }
             else
@@ -39,44 +39,26 @@ public:
         }
     }
 
-    void spawnEnemy(){
+    void spawnEnemy(sf::RenderWindow& window){
         int t = rand() % 4; 
+        Enemy* tmp=nullptr;
         if (t==0){
-            this->bird = new Bird;
-            this->bird->init();
-            this->bird->shape.setPosition(
-                0.f,
-                static_cast<int>((rand() % 5) * (this->bird->shape.getSize().x))
-            );
-            this->enemies.push_back(this->bird);
+            tmp = new Bird;
         }
         else if (t==1){
-            this->car = new Car;
-            this->car->init();
-            this->car->shape.setPosition(
-                0.f,
-                static_cast<int>((rand() % 5) * (this->car->shape.getSize().x))
-            );
-            this->enemies.push_back(this->car);
+            tmp = new Car;
         }
         else if (t==2){
-            this->truck = new Truck;
-            this->truck->init();
-            this->truck->shape.setPosition(
-                0.f,
-                static_cast<int>((rand() % 5) * (this->truck->shape.getSize().x))
-            );
-            this->enemies.push_back(this->truck);
+            tmp = new Truck;
         }
         else if (t==3){
-            this->dinasour = new Dinasour;
-            this->dinasour->init();
-            this->dinasour->shape.setPosition(
-                0.f,
-                static_cast<int>((rand() % 5) * (this->dinasour->shape.getSize().x))
-            );
-            this->enemies.push_back(this->dinasour);
+            tmp = new Dinasour;
         }
+        tmp->shape.setPosition(
+            0.f,
+            static_cast<float>(rand() % static_cast<int>(window.getSize().y - tmp->shape.getSize().y))
+        );
+        this->enemies.push_back(tmp);
     }
 
     void renderEnemies(sf::RenderWindow& window){
