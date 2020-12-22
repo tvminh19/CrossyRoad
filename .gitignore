@@ -344,3 +344,4 @@ healthchecksdb
 .vs
 *.exe
 .vscode
+*.out
