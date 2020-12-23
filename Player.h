@@ -15,20 +15,24 @@ public:
         this->shape.setPosition(sf::Vector2f(540, 660));
     }
 
-    void update(){
+    void update(sf::RenderWindow& window){
         // time=clock.restart().asSeconds();
         if (this->clock.getElapsedTime()>time){
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
-                this->left();
+                if (canMove(window, sf::Vector2f(-50,0)))
+                    this->left();
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
-                this->right();
+                if (canMove(window, sf::Vector2f(50,0)))
+                    this->right();
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
-                this->up();
+                if (canMove(window, sf::Vector2f(0, -50)))
+                    this->up();
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
-                this->down();
+                if (canMove(window, sf::Vector2f(0, 50)))
+                    this->down();
             }
             clock.restart();
         }
@@ -53,6 +57,38 @@ public:
 
     void render(sf::RenderWindow& window){
         window.draw(this->shape);
+    }
+
+    bool canMove(sf::RenderWindow& window, sf::Vector2f trans){
+        sf::Vector2f vec2GlobalPos(this->shape.getPosition()+trans);
+        sf::Vector2f vec2LocalPoint;
+        sf::Vector2f vec2PointPosition;
+
+        for (unsigned int i = 0; i < this->shape.getPointCount(); i++)
+        {
+            // set relative position of the current point
+            vec2LocalPoint = (this->shape.getPoint(i) - this->shape.getOrigin());
+            // Adds the objects global position to the points relitive position to get the points actual position
+            vec2PointPosition = (vec2GlobalPos + vec2LocalPoint);
+
+            if (vec2PointPosition.x > window.getSize().x)		{ return false; } // too far left
+            else if (vec2PointPosition.y > window.getSize().y)	{ return false; } // too far down
+            else if (vec2PointPosition.x < 0)	{ return false; } // too far right
+            else if (vec2PointPosition.y < 0)	{ return false; } // too far up
+        }
+        return true; 
+    }
+
+    sf::RectangleShape getShape(){
+        return this->shape;
+    }
+
+    void reset(){
+        this->shape.setPosition(sf::Vector2f(540, 660));
+    }
+
+    bool isPressPause(){
+        
     }
 };
 

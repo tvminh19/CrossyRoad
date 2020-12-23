@@ -19,7 +19,8 @@ private:
 
     std::vector<Enemy*> enemies;
 public:
-    void update(sf::RenderWindow& window){
+
+    void update(sf::RenderWindow& window, int level){
         if (this->enemies.size() < 10)
         {
             if (this->enemySpawnTimer >= this->enemySpawnTImerMax)
@@ -28,11 +29,11 @@ public:
                 this->enemySpawnTimer = 0.f;
             }
             else
-                this->enemySpawnTimer += 1.f;
+                this->enemySpawnTimer += 1.f+float(level)/5;
         }
 
         for (int i = 0; i < enemies.size(); ++i) {
-            enemies[i]->setSpeed(10.f,0.f);
+            enemies[i]->setSpeed(float(5+level),0.f);
             enemies[i]->update();
             if (enemies[i]->shape.getPosition().x > window.getSize().x) {
                 this->enemies.erase(this->enemies.begin() + i);
@@ -68,6 +69,8 @@ public:
             window.draw(e->shape);
         }
     }
+
+    
 };
 
 

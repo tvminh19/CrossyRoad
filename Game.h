@@ -39,6 +39,8 @@ private:
         this->window->setFramerateLimit(60);
     }
 
+    int level=1;
+
 public:
 
     //constructor & Destructor
@@ -50,9 +52,9 @@ public:
     void update(){
         this->pollEvents();
 
-        this->player.update();
+        this->player.update(*window);
 
-        this->trafficlane.update(*window);
+        this->trafficlane.update(*window, level);
     }
 
     void render(){
@@ -63,6 +65,14 @@ public:
         this->trafficlane.renderEnemies(*window);
 
         this->window->display();
+    }
+
+    bool isWin(){
+        if (this->player.getShape().getPosition().y==10){
+            level++;
+            return true;
+        }
+        return false;
     }
 
     ~Game(){
@@ -87,11 +97,31 @@ public:
         }
     }
     
-    void runGame(){
-       while(this->window->isOpen()){
-           this->update();
-           this->render();
-       }
+    int runGame(){
+        while(this->window->isOpen()){
+            this->update();
+            this->render();
+            //win
+            if (isWin()){
+                window->clear();
+                this->player.reset();
+                return this->runGame();
+            }
+
+            
+            
+            //lose
+
+        }
+    }
+
+    //set & get level
+    void setLevel(int _level){
+        level=_level;
+    }
+
+    int getLevel(){
+        return this->level;
     }
 
 };
