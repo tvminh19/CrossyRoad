@@ -108,25 +108,25 @@ public:
             this->render();
 
             //win
-            // if (isWin()){
-            //     window->clear(sf::Color::Black);
-            //     this->drawWin();
-            //     sf::Clock clock;
-            //     int t=3;
-            //     clock.restart().asSeconds();
-            //     while (1){
-            //         if (clock.getElapsedTime()>sf::seconds(t)){
-            //             win=false;
-            //             break;
-            //         }
-            //     }
-            //     window->clear(sf::Color::Black);
-            //     this->player.reset();
-            //     return this->runGame();
-            // }
+            if (isWin()){
+                // window->clear(sf::Color::Black);
+                // this->drawWin();
+                // sf::Clock clock;
+                // int t=3;
+                // clock.restart().asSeconds();
+                // while (1){
+                //     if (clock.getElapsedTime()>sf::seconds(t)){
+                //         win=false;
+                //         break;
+                //     }
+                // }
+                // window->clear(sf::Color::Black);
+                this->player.reset();
+                return this->runGame();
+            }
 
             //pause
-            if (this->isPause){
+            else if (this->isPause){
                 return 0;
             }
 
