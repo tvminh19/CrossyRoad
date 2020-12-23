@@ -28,7 +28,7 @@ public:
                 this->enemySpawnTimer = 0.f;
             }
             else
-                this->enemySpawnTimer += 0.5f;
+                this->enemySpawnTimer += 1.f;
         }
 
         for (int i = 0; i < enemies.size(); ++i) {
