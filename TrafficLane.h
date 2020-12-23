@@ -28,10 +28,11 @@ public:
                 this->enemySpawnTimer = 0.f;
             }
             else
-                this->enemySpawnTimer += 1.f;
+                this->enemySpawnTimer += 0.5f;
         }
 
         for (int i = 0; i < enemies.size(); ++i) {
+            enemies[i]->setSpeed(10.f,0.f);
             enemies[i]->update();
             if (enemies[i]->shape.getPosition().x > window.getSize().x) {
                 this->enemies.erase(this->enemies.begin() + i);
@@ -56,7 +57,8 @@ public:
         }
         tmp->shape.setPosition(
             0.f,
-            static_cast<float>(rand() % static_cast<int>(window.getSize().y - tmp->shape.getSize().y))
+            // static_cast<float>(rand() % static_cast<int>(window.getSize().y + tmp->shape.getSize().y))
+            static_cast<int>((rand() % 5) * (tmp->shape.getSize().x + 20.f))
         );
         this->enemies.push_back(tmp);
     }

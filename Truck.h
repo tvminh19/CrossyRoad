@@ -14,7 +14,7 @@ public:
 
     void update(){
         time=clock.restart().asSeconds();
-        this->shape.move(3.f,0.f);
+        this->shape.move(speed.x, speed.y);
     }
 
 };
