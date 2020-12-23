@@ -5,34 +5,44 @@
 class Player{
 private:
     sf::RectangleShape shape;
+    sf::Texture texture;
     sf::Time time=sf::seconds(0.05f);
     sf::Clock clock;
 public:
     void init(){
         this->shape.setSize(sf::Vector2f(50.f, 50.f));
         // this->shape.setOutlineColor(sf::Color::Red);
-        this->shape.setFillColor(sf::Color::White);
+        // this->shape.setFillColor(sf::Color::White);
         this->shape.setPosition(sf::Vector2f(540, 660));
+        this->texture.loadFromFile("frog.png");
+        this->shape.setTexture(&texture);
+        this->texture.setSmooth(true);
     }
 
     void update(sf::RenderWindow& window){
         // time=clock.restart().asSeconds();
         if (this->clock.getElapsedTime()>time){
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
-                if (canMove(window, sf::Vector2f(-50,0)))
+                if (canMove(window, sf::Vector2f(-50,0))){
+                    // this->shape.setRotation(-90);
                     this->left();
+                }
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
-                if (canMove(window, sf::Vector2f(50,0)))
+                if (canMove(window, sf::Vector2f(50,0))){
+                    // this->shape.setRotation(90);
                     this->right();
+                }
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
                 if (canMove(window, sf::Vector2f(0, -50)))
                     this->up();
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
-                if (canMove(window, sf::Vector2f(0, 50)))
+                if (canMove(window, sf::Vector2f(0, 50))){
+                    // this->shape.setRotation(180);
                     this->down();
+                }
             }
             clock.restart();
         }
