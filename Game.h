@@ -121,6 +121,7 @@ public:
                 //     }
                 // }
                 // window->clear(sf::Color::Black);
+                win=false;
                 this->player.reset();
                 return this->runGame();
             }
