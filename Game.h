@@ -109,20 +109,20 @@ public:
 
             //win
             if (isWin()){
-                // window->clear(sf::Color::Black);
-                // this->drawWin();
-                // sf::Clock clock;
-                // int t=3;
-                // clock.restart().asSeconds();
-                // while (1){
-                //     if (clock.getElapsedTime()>sf::seconds(t)){
-                //         win=false;
-                //         break;
-                //     }
-                // }
-                // window->clear(sf::Color::Black);
-                win=false;
+                window->clear(sf::Color::Black);
+                this->drawWin();
+                sf::Clock clock;
+                int t=3;
+                clock.restart().asSeconds();
+                while (1){
+                    if (clock.getElapsedTime()>sf::seconds(t)){
+                        win=false;
+                        break;
+                    }
+                }
+                window->clear(sf::Color::Black);
                 this->player.reset();
+                this->trafficlane.resetClock();
                 return this->runGame();
             }
 
@@ -152,13 +152,14 @@ public:
         sf::Font font;
         font.loadFromFile("arial.ttf");
         text.setFont(font);
-        text.setString("Next Level");
-        text.setFillColor(sf::Color::Red);
+        text.setString("Next Level:" + std::to_string(level));
+        text.setFillColor(sf::Color::Cyan);
         text.setCharacterSize(60);
-        text.setPosition(0.f,0.f);
+        text.setPosition(350,300);
         text.setStyle(sf::Text::Bold);
 
         window->draw(text);
+        window->display();
     }
 };
 

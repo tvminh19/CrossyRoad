@@ -96,6 +96,10 @@ public:
         }
         return false;
     }
+
+    void resetClock(){
+        this->clock.restart();
+    }
     
 };
 
