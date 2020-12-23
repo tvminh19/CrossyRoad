@@ -7,14 +7,17 @@ private:
     //
 public:
     Bird(){
-        this->shape.setPosition(50.0f, 50.0f);
+        // this->shape.setPosition(50.0f, 50.0f);
 	    this->shape.setSize(sf::Vector2f(100.0f, 100.0f));
-	    this->shape.setFillColor(sf::Color::Cyan);
+	    // this->shape.setFillColor(sf::Color::Cyan);
     }
 
     void update(){
         time=clock.restart().asSeconds();
         this->shape.move(speed.x, speed.y);
+        this->texture.loadFromFile("bird.png");
+        this->shape.setTexture(&texture);
+        this->texture.setSmooth(true);
     }
 
 };
