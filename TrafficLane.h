@@ -101,8 +101,8 @@ public:
     bool checkCollision(sf::FloatRect other){
         for (auto& e : this->enemies){
             if (e->shape.getGlobalBounds().intersects(other)){
-                // return true; //TODO
-                return false;
+                return true; //TODO
+                // return false;
             }
         }
         return false;
