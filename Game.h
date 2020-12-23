@@ -41,6 +41,7 @@ private:
 
     int level=1;
 
+    bool isPause=false;
 public:
 
     //constructor & Destructor
@@ -91,7 +92,7 @@ public:
                 if (this->event.key.code == sf::Keyboard::Escape)
                     this->window->close();
                 if (this->event.key.code == sf::Keyboard::P)
-                    this->isRunning = true;
+                    this->isPause=true;
                 break;
             }
         }
@@ -108,7 +109,10 @@ public:
                 return this->runGame();
             }
 
-            
+
+            if (this->isPause){
+                return 0;
+            }
             
             //lose
 

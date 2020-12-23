@@ -18,6 +18,11 @@ private:
     Dinasour* dinasour;
 
     std::vector<Enemy*> enemies;
+
+    bool isRed=false;
+    int trafficTimeRed=5;
+    int trafficTimeGreen=10;
+    sf::Clock clock;
 public:
 
     void update(sf::RenderWindow& window, int level){
@@ -33,8 +38,21 @@ public:
         }
 
         for (int i = 0; i < enemies.size(); ++i) {
-            enemies[i]->setSpeed(float(5+level),0.f);
-            enemies[i]->update();
+            if (!isRed){
+                enemies[i]->setSpeed(float(5+level),0.f);
+                if (clock.getElapsedTime()>sf::seconds(trafficTimeGreen)){ //TODO
+                    this->isRed=true;
+                    clock.restart();
+                }
+            }
+            else {
+                enemies[i]->setSpeed(0.f,0.f);
+                if (clock.getElapsedTime()>sf::seconds(trafficTimeRed)){ //TODO
+                    this->isRed=false;
+                    clock.restart();
+                }
+            }
+            enemies[i]->update();//TODO
             if (enemies[i]->shape.getPosition().x > window.getSize().x) {
                 this->enemies.erase(this->enemies.begin() + i);
             }
