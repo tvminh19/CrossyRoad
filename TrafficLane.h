@@ -23,6 +23,8 @@ private:
     int trafficTimeRed=3;
     int trafficTimeGreen=10;
     sf::Clock clock;
+
+    int lane=0;
 public:
 
     void update(sf::RenderWindow& window, int level){
@@ -74,10 +76,18 @@ public:
         else if (t==3){
             tmp = new Dinasour;
         }
+        int k=rand()%5;
+
+        if (k!=lane){
+            lane=k;
+        }else{
+            lane=(k+1)%5;
+        }
+
         tmp->shape.setPosition(
             0.f,
             // static_cast<float>(rand() % static_cast<int>(window.getSize().y + tmp->shape.getSize().y))
-            static_cast<int>((rand() % 5) * (tmp->shape.getSize().y + 20.f))
+            static_cast<int>(this->lane * (tmp->shape.getSize().y + 20.f))
         );
         this->enemies.push_back(tmp);
     }
@@ -91,7 +101,8 @@ public:
     bool checkCollision(sf::FloatRect other){
         for (auto& e : this->enemies){
             if (e->shape.getGlobalBounds().intersects(other)){
-                return true;
+                // return true; //TODO
+                return false;
             }
         }
         return false;
