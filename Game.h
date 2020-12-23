@@ -122,7 +122,7 @@ public:
                 }
                 window->clear(sf::Color::Black);
                 this->player.reset();
-                this->trafficlane.resetClock();
+                // this->trafficlane.resetClock();
                 return this->runGame();
             }
 
@@ -136,6 +136,7 @@ public:
                 return -1;
             }
         }
+        return 999;
     }
 
     //set & get level

@@ -6,7 +6,10 @@ class Enemy{
 protected:
     sf::Vector2f speed;
 public:
+    sf::Sprite sprite;
     sf::RectangleShape shape;
+    sf::Texture texture;
+    
     float time;
     sf::Clock clock;
 

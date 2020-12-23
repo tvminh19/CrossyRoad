@@ -20,13 +20,13 @@ private:
     std::vector<Enemy*> enemies;
 
     bool isRed=false;
-    int trafficTimeRed=5;
+    int trafficTimeRed=3;
     int trafficTimeGreen=10;
     sf::Clock clock;
 public:
 
     void update(sf::RenderWindow& window, int level){
-        if (this->enemies.size() < 10)
+        if (this->enemies.size() < 8)
         {
             if (this->enemySpawnTimer >= this->enemySpawnTImerMax)
             {
@@ -34,7 +34,7 @@ public:
                 this->enemySpawnTimer = 0.f;
             }
             else
-                this->enemySpawnTimer += 1.f+float(level)/5;
+                this->enemySpawnTimer += 0.5f+float(level)/5;
         }
 
         for (int i = 0; i < enemies.size(); ++i) {
@@ -77,7 +77,7 @@ public:
         tmp->shape.setPosition(
             0.f,
             // static_cast<float>(rand() % static_cast<int>(window.getSize().y + tmp->shape.getSize().y))
-            static_cast<int>((rand() % 5) * (tmp->shape.getSize().x + 20.f))
+            static_cast<int>((rand() % 5) * (tmp->shape.getSize().y + 20.f))
         );
         this->enemies.push_back(tmp);
     }
