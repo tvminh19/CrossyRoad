@@ -42,6 +42,8 @@ private:
     int level=1;
 
     bool isPause=false;
+
+    bool win=false;
 public:
 
     //constructor & Destructor
@@ -71,6 +73,7 @@ public:
     bool isWin(){
         if (this->player.getShape().getPosition().y==10){
             level++;
+            this->win=true;
             return true;
         }
         return false;
@@ -100,22 +103,37 @@ public:
     
     int runGame(){
         while(this->window->isOpen()){
-            this->update();
+            if (!win)
+                this->update();
             this->render();
+
             //win
-            if (isWin()){
-                window->clear();
-                this->player.reset();
-                return this->runGame();
-            }
+            // if (isWin()){
+            //     window->clear(sf::Color::Black);
+            //     this->drawWin();
+            //     sf::Clock clock;
+            //     int t=3;
+            //     clock.restart().asSeconds();
+            //     while (1){
+            //         if (clock.getElapsedTime()>sf::seconds(t)){
+            //             win=false;
+            //             break;
+            //         }
+            //     }
+            //     window->clear(sf::Color::Black);
+            //     this->player.reset();
+            //     return this->runGame();
+            // }
 
-
-            if (this->isPause){
+            //pause
+            else if (this->isPause){
                 return 0;
             }
-            
-            //lose
 
+            //lose
+            else if (this->trafficlane.checkCollision(this->player.getShape().getGlobalBounds())){
+                return -1;
+            }
         }
     }
 
@@ -128,6 +146,19 @@ public:
         return this->level;
     }
 
+    void drawWin(){
+        sf::Text text;
+        sf::Font font;
+        font.loadFromFile("arial.ttf");
+        text.setFont(font);
+        text.setString("Next Level");
+        text.setFillColor(sf::Color::Red);
+        text.setCharacterSize(60);
+        text.setPosition(0.f,0.f);
+        text.setStyle(sf::Text::Bold);
+
+        window->draw(text);
+    }
 };
 
 

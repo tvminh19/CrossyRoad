@@ -88,6 +88,14 @@ public:
         }
     }
 
+    bool checkCollision(sf::FloatRect other){
+        for (auto& e : this->enemies){
+            if (e->shape.getGlobalBounds().intersects(other)){
+                return true;
+            }
+        }
+        return false;
+    }
     
 };
 
