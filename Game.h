@@ -126,7 +126,7 @@ public:
             // }
 
             //pause
-            else if (this->isPause){
+            if (this->isPause){
                 return 0;
             }
 
