@@ -30,7 +30,7 @@ private:
 public:
 
     void update(sf::RenderWindow& window, int level){
-        if (this->enemies.size() < 8)
+        if (this->enemies.size() < 10+level)
         {
             if (this->enemySpawnTimer >= this->enemySpawnTImerMax)
             {   
@@ -43,7 +43,7 @@ public:
 
         for (int i = 0; i < enemies.size(); ++i) {
             enemies[i]->setSpeed(float(5+level),0.f);
-            if (clock.getElapsedTime()>sf::seconds(trafficTimeGreen)){ //TODO
+            if (clock.getElapsedTime()>sf::seconds(1+rand()%5)){ //TODO
                 srand(time(NULL));
                 for (int i=0; i<5; ++i){
                     traffic[i]=rand()%2;
