@@ -21,6 +21,7 @@ private:
 			"Crossy Road",
 			sf::Style::Default
 		);
+		this->window->setFramerateLimit(60);
 	}
 public:
 	//cons & des
