@@ -2,12 +2,10 @@
 
 int main(){
     Menu menu;
-ReturnMenu:
     switch (menu.drawMenu()){
     //newgame
     case 0:
-        while (menu.newGame()!=2);
-        goto ReturnMenu;
+        menu.newGame();
         break;
     case 1:
         menu.loadGame();

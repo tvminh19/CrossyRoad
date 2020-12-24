@@ -9,7 +9,7 @@
 class Menu{
 private:
 	sf::RenderWindow* window=nullptr;
-	sf::Event event;
+	sf::Event* event=nullptr;
 	sf::VideoMode videoMode;
 	Game* game=nullptr;
 
@@ -28,12 +28,14 @@ public:
 	Menu(){
 		//initWindow
 		this->game=new Game;
+		this->event=new sf::Event;
 		this->initWindow();
 	}
 	
 	~Menu(){
 		delete window;
 		delete game;
+		delete event;
 	}
 
 	/**
@@ -114,8 +116,61 @@ public:
 	}
 
 	int newGame(){
-		if (this->game->runGame(*window)==0){
-			return this->drawMenu();
+		int t = this->game->runGame(*window);
+		delete game;
+		game=nullptr;
+		game=new Game;
+		window->clear(sf::Color::Black);
+		window->display();
+		if (t==0){
+			int k = this->drawSubMenu();
+			if (k==0){
+				return this->newGame();
+			}
+			else if (k==1){
+				switch (this->drawMenu()){
+				case 0:
+					return newGame();
+					break;
+				case 1:
+					return loadGame();
+					break;
+				case 2:
+					return rank();
+					break;
+				case 4:
+					return music();
+					break;
+				case 5:
+					return exit();
+					break;
+				}
+			}
+		}
+		else if (t==-1){
+			int k = drawLoseMenu();
+			if (k==0){
+				return this->newGame();
+			}
+			else if (k==1){
+				switch (this->drawMenu()){
+				case 0:
+					return newGame();
+					break;
+				case 1:
+					return loadGame();
+					break;
+				case 2:
+					return rank();
+					break;
+				case 4:
+					return music();
+					break;
+				case 5:
+					return exit();
+					break;
+				}
+			}
 		}
 	}
 
@@ -148,20 +203,128 @@ public:
 	}
 
 	void pollEvents(){
-        while (this->window->pollEvent(this->event))
+        while (this->window->pollEvent(*this->event))
         {
-            switch (this->event.type)
+            switch (this->event->type)
             {
             case sf::Event::Closed:
                 this->window->close();
                 break;
             case sf::Event::KeyPressed:
-                if (this->event.key.code == sf::Keyboard::Escape)
+                if (this->event->key.code == sf::Keyboard::Escape)
                     this->window->close();
 				break;
             }
         }
     }
+
+	int drawSubMenu(){
+		window->clear();
+		std::string menu[2]={"Resume", "Exit"};
+		sf::Text text[2];
+		sf::Font font;
+		font.loadFromFile("arial.ttf");
+
+		//setup for line
+		for (int i=0; i<2; ++i){
+			text[i].setFont(font);
+			text[i].setCharacterSize(40);
+			text[i].setPosition(sf::Vector2f(window->getSize().x / 2 - 75, i * 62 + 350));
+			text[i].setFillColor(sf::Color::Cyan);
+			text[i].setString(menu[i]);
+		}
+		text[0].setFillColor(sf::Color::Red);
+		
+		int pos=0;
+
+		// for (int i=0; i<5; ++i){
+		// 	window->draw(text[i]);
+		// 
+
+		sf::Clock clock;
+		sf::Time time=sf::seconds(0.15f);
+		clock.restart().asSeconds();
+		while (window->isOpen()){
+			this->pollEvents();
+			for (int i=0; i<2; ++i){
+				window->draw(text[i]);
+			}
+
+			window->display();
+
+			if (clock.getElapsedTime()>=time){
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && pos>0){
+					text[pos].setFillColor(sf::Color::Cyan);
+					pos--;
+					text[pos].setFillColor(sf::Color::Red);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<1){
+					text[pos].setFillColor(sf::Color::Cyan);
+					pos++;
+					text[pos].setFillColor(sf::Color::Red);
+				}
+				clock.restart().asSeconds();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+				return pos;
+			}
+		}
+		return 1;
+	}
+
+	int drawLoseMenu(){
+		window->clear();
+		std::string menu[2]={"Yes", "No"};
+		sf::Text text[2];
+		sf::Font font;
+		font.loadFromFile("arial.ttf");
+
+		//setup for line
+		for (int i=0; i<2; ++i){
+			text[i].setFont(font);
+			text[i].setCharacterSize(40);
+			text[i].setPosition(sf::Vector2f(window->getSize().x / 2 - 75, i * 62 + 350));
+			text[i].setFillColor(sf::Color::Cyan);
+			text[i].setString(menu[i]);
+		}
+		text[0].setFillColor(sf::Color::Red);
+		
+		int pos=0;
+
+		// for (int i=0; i<5; ++i){
+		// 	window->draw(text[i]);
+		// 
+
+		sf::Clock clock;
+		sf::Time time=sf::seconds(0.15f);
+		clock.restart().asSeconds();
+		while (window->isOpen()){
+			this->pollEvents();
+			for (int i=0; i<2; ++i){
+				window->draw(text[i]);
+			}
+
+			window->display();
+
+			if (clock.getElapsedTime()>=time){
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && pos>0){
+					text[pos].setFillColor(sf::Color::Cyan);
+					pos--;
+					text[pos].setFillColor(sf::Color::Red);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<1){
+					text[pos].setFillColor(sf::Color::Cyan);
+					pos++;
+					text[pos].setFillColor(sf::Color::Red);
+				}
+				clock.restart().asSeconds();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+				return pos;
+			}
+		}
+		return 1;
+	}
 };
 
 #endif // DEBUG
