@@ -97,7 +97,7 @@ public:
             }
 
             tmp->shape.setPosition(
-                0.f,
+                -80.f,
                 // static_cast<float>(rand() % static_cast<int>(window.getSize().y + tmp->shape.getSize().y))
                 static_cast<int>(this->lane * (tmp->shape.getSize().y + 20.f))
             );

@@ -114,12 +114,25 @@ public:
 
             //pause
             else if (this->isPause){
-                return 0;
+                int k=this->drawSubMenu(window);
+                if (k==0){
+                    return this->runGame(window);
+                }
+                else if (k==1){
+                    return 0;
+                }
             }
 
             //lose
             else if (this->trafficlane->checkCollision(this->player->getShape().getGlobalBounds())){
-                return -1;
+               int k=this->drawLoseMenu(window);
+                if (k==0){
+                    this->setLevel(1);
+                    return this->runGame(window);
+                }
+                else if (k==1){
+                    return 0;
+                }
             }
         }
         return 999;
@@ -148,6 +161,117 @@ public:
         window.draw(text);
         window.display();
     }
+
+/* -------------------------------------------------------------------------- */
+/*                                   border                                   */
+/* -------------------------------------------------------------------------- */
+    int drawSubMenu(sf::RenderWindow& window){
+		window.clear();
+		std::string menu[2]={"Resume", "Exit"};
+		sf::Text text[2];
+		sf::Font font;
+		font.loadFromFile("arial.ttf");
+
+		//setup for line
+		for (int i=0; i<2; ++i){
+			text[i].setFont(font);
+			text[i].setCharacterSize(40);
+			text[i].setPosition(sf::Vector2f(window.getSize().x / 2 - 75, i * 62 + 350));
+			text[i].setFillColor(sf::Color::Cyan);
+			text[i].setString(menu[i]);
+		}
+		text[0].setFillColor(sf::Color::Red);
+		
+		int pos=0;
+
+		// for (int i=0; i<5; ++i){
+		// 	window.draw(text[i]);
+		// 
+
+		sf::Clock clock;
+		sf::Time time=sf::seconds(0.15f);
+		clock.restart().asSeconds();
+		while (window.isOpen()){
+			this->pollEvents(window);
+			for (int i=0; i<2; ++i){
+				window.draw(text[i]);
+			}
+
+			window.display();
+
+			if (clock.getElapsedTime()>=time){
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && pos>0){
+					text[pos].setFillColor(sf::Color::Cyan);
+					pos--;
+					text[pos].setFillColor(sf::Color::Red);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<1){
+					text[pos].setFillColor(sf::Color::Cyan);
+					pos++;
+					text[pos].setFillColor(sf::Color::Red);
+				}
+				clock.restart().asSeconds();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+				return pos;
+			}
+		}
+		return 1;
+	}
+
+	int drawLoseMenu(sf::RenderWindow& window){
+		window.clear();
+		std::string menu[2]={"Yes", "No"};
+		sf::Text text[2];
+		sf::Font font;
+		font.loadFromFile("arial.ttf");
+
+		//setup for line
+		for (int i=0; i<2; ++i){
+			text[i].setFont(font);
+			text[i].setCharacterSize(40);
+			text[i].setPosition(sf::Vector2f(window.getSize().x / 2 - 75, i * 62 + 350));
+			text[i].setFillColor(sf::Color::Cyan);
+			text[i].setString(menu[i]);
+		}
+		text[0].setFillColor(sf::Color::Red);
+		
+		int pos=0;
+
+		// for (int i=0; i<5; ++i){
+		// 	window.draw(text[i]);
+		// 
+
+		sf::Clock clock;
+		sf::Time time=sf::seconds(0.15f);
+		clock.restart().asSeconds();
+		while (window.isOpen()){
+			this->pollEvents(window);
+			for (int i=0; i<2; ++i){
+				window.draw(text[i]);
+			}
+
+			window.display();
+
+			if (clock.getElapsedTime()>=time){
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && pos>0){
+					text[pos].setFillColor(sf::Color::Cyan);
+					pos--;
+					text[pos].setFillColor(sf::Color::Red);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<1){
+					text[pos].setFillColor(sf::Color::Cyan);
+					pos++;
+					text[pos].setFillColor(sf::Color::Red);
+				}
+				clock.restart().asSeconds();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+				return pos;
+			}
+		}
+		return 1;
+	}
 };
 
 
