@@ -18,20 +18,22 @@ private:
     Dinasour* dinasour;
 
     std::vector<Enemy*> enemies;
+    std::vector<int> light;
 
     bool isRed=false;
     int trafficTimeRed=3;
-    int trafficTimeGreen=10;
+    int trafficTimeGreen=5;
     sf::Clock clock;
 
     int lane=0;
+    bool traffic[5]={0,0,0,0,0};
 public:
 
     void update(sf::RenderWindow& window, int level){
         if (this->enemies.size() < 8)
         {
             if (this->enemySpawnTimer >= this->enemySpawnTImerMax)
-            {
+            {   
                 this->spawnEnemy(window);
                 this->enemySpawnTimer = 0.f;
             }
@@ -40,56 +42,68 @@ public:
         }
 
         for (int i = 0; i < enemies.size(); ++i) {
-            if (!isRed){
-                enemies[i]->setSpeed(float(5+level),0.f);
-                if (clock.getElapsedTime()>sf::seconds(trafficTimeGreen)){ //TODO
-                    this->isRed=true;
-                    clock.restart();
+            enemies[i]->setSpeed(float(5+level),0.f);
+            if (clock.getElapsedTime()>sf::seconds(trafficTimeGreen)){ //TODO
+                srand(time(NULL));
+                for (int i=0; i<5; ++i){
+                    traffic[i]=rand()%2;
                 }
+                clock.restart();
             }
-            else {
-                enemies[i]->setSpeed(0.f,0.f);
-                if (clock.getElapsedTime()>sf::seconds(trafficTimeRed)){ //TODO
-                    this->isRed=false;
-                    clock.restart();
-                }
-            }
-            enemies[i]->update();//TODO
+
+
+
+            if (canMove(light[i]))
+                enemies[i]->update();//TODO
             if (enemies[i]->shape.getPosition().x > window.getSize().x) {
                 this->enemies.erase(this->enemies.begin() + i);
+                this->light.erase(this->light.begin() + i);
             }
         }
     }
 
+    bool canMove(int _lane){
+        for (int i=0; i<5; ++i){
+            if (traffic[_lane]==1){
+                return false;
+            }
+        }
+        return true;
+    }
+
     void spawnEnemy(sf::RenderWindow& window){
-        int t = rand() % 4; 
-        Enemy* tmp=nullptr;
-        if (t==0){
-            tmp = new Bird;
-        }
-        else if (t==1){
-            tmp = new Car;
-        }
-        else if (t==2){
-            tmp = new Truck;
-        }
-        else if (t==3){
-            tmp = new Dinasour;
-        }
         int k=rand()%5;
 
         if (k!=lane){
             lane=k;
-        }else{
+        }else if (k==lane){
             lane=(k+1)%5;
         }
 
-        tmp->shape.setPosition(
-            0.f,
-            // static_cast<float>(rand() % static_cast<int>(window.getSize().y + tmp->shape.getSize().y))
-            static_cast<int>(this->lane * (tmp->shape.getSize().y + 20.f))
-        );
-        this->enemies.push_back(tmp);
+        if (canMove(lane)){
+            int t = rand() % 4; 
+            Enemy* tmp=nullptr;
+            if (t==0){
+                tmp = new Bird;
+            }
+            else if (t==1){
+                tmp = new Car;
+            }
+            else if (t==2){
+                tmp = new Truck;
+            }
+            else if (t==3){
+                tmp = new Dinasour;
+            }
+
+            tmp->shape.setPosition(
+                0.f,
+                // static_cast<float>(rand() % static_cast<int>(window.getSize().y + tmp->shape.getSize().y))
+                static_cast<int>(this->lane * (tmp->shape.getSize().y + 20.f))
+            );
+            this->enemies.push_back(tmp);
+            this->light.push_back(lane);
+        }
     }
 
     void renderEnemies(sf::RenderWindow& window){

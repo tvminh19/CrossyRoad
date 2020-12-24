@@ -139,7 +139,7 @@ public:
 					pos--;
 					text[pos].setFillColor(sf::Color::Red);
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<2){
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<1){
 					text[pos].setFillColor(sf::Color::Cyan);
 					pos++;
 					text[pos].setFillColor(sf::Color::Red);
@@ -193,7 +193,7 @@ public:
 					pos--;
 					text[pos].setFillColor(sf::Color::Red);
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<2){
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<1){
 					text[pos].setFillColor(sf::Color::Cyan);
 					pos++;
 					text[pos].setFillColor(sf::Color::Red);
