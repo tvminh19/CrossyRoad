@@ -12,8 +12,6 @@
 class Game{
 private:
     //prepare for making window
-    sf::VideoMode videoMode;
-    sf::RenderWindow* window;
     sf::Event event;
     
     TrafficLane trafficlane;
@@ -26,19 +24,6 @@ private:
         this->isRunning=false;
     }
 
-    void initWindow(){
-        this->videoMode.height=720;
-        this->videoMode.width=1080;
-
-        this->window=new sf::RenderWindow(
-            this->videoMode,
-            "Crossy Road",
-            sf::Style::Default
-        );
-
-        this->window->setFramerateLimit(60);
-    }
-
     int level=1;
 
     bool isPause=false;
@@ -49,25 +34,24 @@ public:
     //constructor & Destructor
     Game(){
         this->initVars();
-        this->initWindow();
     }
 
-    void update(){
-        this->pollEvents();
+    void update(sf::RenderWindow& window){
+        this->pollEvents(window);
 
-        this->player.update(*window);
+        this->player.update(window);
 
-        this->trafficlane.update(*window, level);
+        this->trafficlane.update(window, level);
     }
 
-    void render(){
-        this->window->clear();
+    void render(sf::RenderWindow& window){
+        window.clear();
 
-        this->player.render(*window);
+        this->player.render(window);
 
-        this->trafficlane.renderEnemies(*window);
+        this->trafficlane.renderEnemies(window);
 
-        this->window->display();
+        window.display();
     }
 
     bool isWin(){
@@ -80,20 +64,20 @@ public:
     }
 
     ~Game(){
-        delete window;
+        
     }
 
-    void pollEvents(){
-        while (this->window->pollEvent(this->event))
+    void pollEvents(sf::RenderWindow& window){
+        while (window.pollEvent(this->event))
         {
             switch (this->event.type)
             {
             case sf::Event::Closed:
-                this->window->close();
+                window.close();
                 break;
             case sf::Event::KeyPressed:
                 if (this->event.key.code == sf::Keyboard::Escape)
-                    this->window->close();
+                    window.close();
                 if (this->event.key.code == sf::Keyboard::P)
                     this->isPause=true;
                 break;
@@ -101,16 +85,16 @@ public:
         }
     }
     
-    int runGame(){
-        while(this->window->isOpen()){
+    int runGame(sf::RenderWindow& window){
+        while(window.isOpen()){
             if (!win)
-                this->update();
-            this->render();
+                this->update(window);
+            this->render(window);
 
             //win
             if (isWin()){
-                window->clear(sf::Color::Black);
-                this->drawWin();
+                window.clear(sf::Color::Black);
+                this->drawWin(window);
                 sf::Clock clock;
                 int t=3;
                 clock.restart().asSeconds();
@@ -120,10 +104,10 @@ public:
                         break;
                     }
                 }
-                window->clear(sf::Color::Black);
+                window.clear(sf::Color::Black);
                 this->player.reset();
                 // this->trafficlane.resetClock();
-                return this->runGame();
+                return this->runGame(window);
             }
 
             //pause
@@ -148,7 +132,7 @@ public:
         return this->level;
     }
 
-    void drawWin(){
+    void drawWin(sf::RenderWindow& window){
         sf::Text text;
         sf::Font font;
         font.loadFromFile("arial.ttf");
@@ -159,8 +143,8 @@ public:
         text.setPosition(350,300);
         text.setStyle(sf::Text::Bold);
 
-        window->draw(text);
-        window->display();
+        window.draw(text);
+        window.display();
     }
 };
 
