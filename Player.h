@@ -9,6 +9,16 @@ private:
     sf::Time time=sf::seconds(0.05f);
     sf::Clock clock;
 public:
+    Player(){
+        this->shape.setSize(sf::Vector2f(50.f, 50.f));
+        // this->shape.setOutlineColor(sf::Color::Red);
+        // this->shape.setFillColor(sf::Color::White);
+        this->shape.setPosition(sf::Vector2f(540, 660));
+        this->texture.loadFromFile("frog.png");
+        this->shape.setTexture(&texture);
+        this->texture.setSmooth(true);
+    }
+
     void init(){
         this->shape.setSize(sf::Vector2f(50.f, 50.f));
         // this->shape.setOutlineColor(sf::Color::Red);

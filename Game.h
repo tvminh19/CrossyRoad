@@ -14,13 +14,14 @@ private:
     //prepare for making window
     sf::Event event;
     
-    TrafficLane trafficlane;
-    Player player;
+    TrafficLane* trafficlane;
+    Player* player;
 
     bool isRunning;
 
     void initVars(){
-        this->player.init();
+        this->trafficlane=new TrafficLane;
+        this->player=new Player;
         this->isRunning=false;
     }
 
@@ -36,35 +37,36 @@ public:
         this->initVars();
     }
 
+    ~Game(){
+        delete player;
+        delete trafficlane;
+    }
+
     void update(sf::RenderWindow& window){
         this->pollEvents(window);
 
-        this->player.update(window);
+        this->player->update(window);
 
-        this->trafficlane.update(window, level);
+        this->trafficlane->update(window, level);
     }
 
     void render(sf::RenderWindow& window){
         window.clear();
 
-        this->player.render(window);
+        this->player->render(window);
 
-        this->trafficlane.renderEnemies(window);
+        this->trafficlane->renderEnemies(window);
 
         window.display();
     }
 
     bool isWin(){
-        if (this->player.getShape().getPosition().y==10){
+        if (this->player->getShape().getPosition().y==10){
             level++;
             this->win=true;
             return true;
         }
         return false;
-    }
-
-    ~Game(){
-        
     }
 
     void pollEvents(sf::RenderWindow& window){
@@ -105,8 +107,8 @@ public:
                     }
                 }
                 window.clear(sf::Color::Black);
-                this->player.reset();
-                // this->trafficlane.resetClock();
+                this->player->reset();
+                // this->trafficlane->resetClock();
                 return this->runGame(window);
             }
 
@@ -116,7 +118,7 @@ public:
             }
 
             //lose
-            else if (this->trafficlane.checkCollision(this->player.getShape().getGlobalBounds())){
+            else if (this->trafficlane->checkCollision(this->player->getShape().getGlobalBounds())){
                 return -1;
             }
         }
