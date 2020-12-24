@@ -95,21 +95,7 @@ public:
 				clock.restart().asSeconds();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-				if (pos==0){
-					return this->newGame();
-				}
-				if (pos==1){
-					return this->loadGame();
-				}
-				if (pos==2){
-					return this->rank();
-				}
-				if (pos==3){
-					return this->music();
-				}
-				if (pos==4){
-					return this->exit();
-				}
+				return pos;
 			}
 		}
 		return 4;
