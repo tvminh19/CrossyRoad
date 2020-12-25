@@ -1,10 +1,71 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
+#pragma warning(disable : 4996)
+
 #include "Game.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
+
+
+class Button {
+private:
+	sf::RectangleShape button;
+	sf::Text text;
+	sf::Color bgColor;
+public:
+	Button() {}
+
+	Button(const std::string& t, sf::Vector2f size, int charSize, sf::Color background, sf::Color textColor)
+	{
+		sf::String str(t);
+		text.setString(str);
+		text.setColor(textColor);
+		text.setCharacterSize(charSize);
+		button.setSize(size);
+		button.setFillColor(background);
+		bgColor = background;
+	}
+
+	void set_font(const sf::Font& font)
+	{
+		text.setFont(font);
+	}
+
+	void set_position(sf::Vector2f pos)
+	{
+		button.setPosition(pos);
+		float x = (pos.x + button.getLocalBounds().width / 3) - (text.getLocalBounds().width / 2) - 40;
+		float y = (pos.y + button.getLocalBounds().height / 3) - (text.getLocalBounds().height / 2) - 15;
+		text.setPosition(sf::Vector2f(x, y));
+	}
+
+	void drawto(sf::RenderWindow& window)
+	{
+		window.draw(button);
+		window.draw(text);
+	}
+
+	bool isMouse(sf::RenderWindow& window)
+	{
+		float mouseX = sf::Mouse::getPosition(window).x;
+		float mouseY = sf::Mouse::getPosition(window).y;
+		float btnPosX = button.getPosition().x;
+		float btnPosY = button.getPosition().y;
+		float btnPosWidth = btnPosX + button.getLocalBounds().width;
+		float btnPosHeight = btnPosY + button.getLocalBounds().height;
+
+		if (mouseX < btnPosWidth && mouseX > btnPosX && mouseY < btnPosHeight && mouseY > btnPosY)
+		{
+			button.setFillColor(sf::Color::Yellow);
+			return true;
+		}
+		button.setFillColor(bgColor);
+		return false;
+	}
+	~Button() {}
+};
 
 class Menu{
 private:
@@ -16,13 +77,14 @@ private:
 	void initWindow(){
 		this->videoMode.height=720;
 		this->videoMode.width=1080;
-		window=new sf::RenderWindow(
+		window = new sf::RenderWindow(
 			this->videoMode,
 			"Crossy Road",
 			sf::Style::Default
 		);
 		this->window->setFramerateLimit(60);
 	}
+
 public:
 	//cons & des
 	Menu(){
@@ -48,56 +110,55 @@ public:
 	 * 4 -> Exit
 	 */
 	int drawMenu(){
+
 		window->clear();
-		std::string menu[5]={"New Game", "Loading Game", "Ranking", "Music: ON", "Exit"};
-		sf::Text text[5];
+
+		std::string menu[5] = {"New Game", "Load Game", "Ranking", "Music: ON", "Exit"};
+		std::vector <Button> menu_button;
 		sf::Font font;
-		font.loadFromFile("arial.ttf");
+		sf::Texture texture;
 
-		//setup for line
-		for (int i=0; i<5; ++i){
-			text[i].setFont(font);
-			text[i].setCharacterSize(40);
-			text[i].setPosition(sf::Vector2f(this->window->getSize().x / 2 - 75, i * 62 + 350));
-			text[i].setFillColor(sf::Color::Cyan);
-			text[i].setString(menu[i]);
-		}
-		text[0].setFillColor(sf::Color::Red);
+		texture.loadFromFile("logo.png");
+
+		sf::Sprite sprite(texture);
+		int i;
 		
-		int pos=0;
+		font.loadFromFile("Animated.ttf");
+		sprite.setPosition(sf::Vector2f(360, 10));
+		
 
-		// for (int i=0; i<5; ++i){
-		// 	window->draw(text[i]);
-		// 
-
-		sf::Clock clock;
-		sf::Time time=sf::seconds(0.15f);
-		clock.restart().asSeconds();
+		for (i = 0; i < 5; ++i) {
+			Button a(menu[i], { 220, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
+			a.set_position({ (float)420 , (float)i * 60 + 350 });
+			a.set_font(font);
+			menu_button.push_back(a);
+		}
+		
 		while (window->isOpen()){
 			this->pollEvents();
-			for (int i=0; i<5; ++i){
-				window->draw(text[i]);
+			for (i = 0; i < 5; ++i){
+				menu_button[i].drawto(*window);
 			}
+
+			window->draw(sprite);
 
 			window->display();
 
-			if (clock.getElapsedTime()>=time){
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && pos>0){
-					text[pos].setFillColor(sf::Color::Cyan);
-					pos--;
-					text[pos].setFillColor(sf::Color::Red);
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				for (i = 0; i < 5; ++i) {
+					if (menu_button[i].isMouse(*window))
+						return i;
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<4){
-					text[pos].setFillColor(sf::Color::Cyan);
-					pos++;
-					text[pos].setFillColor(sf::Color::Red);
-				}
-				clock.restart().asSeconds();
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-				return pos;
+
+			for (i = 0; i < 5; ++i) {
+				menu_button[i].isMouse(*window);
 			}
+
+			window->clear();
 		}
+
 		return 4;
 	}
 
@@ -208,109 +269,106 @@ public:
 		window->clear();
 		std::string menu[2]={"Resume", "Exit"};
 		sf::Text text[2];
+		std::vector <Button> menu_button;
 		sf::Font font;
-		font.loadFromFile("arial.ttf");
+		sf::Texture texture;
 
-		//setup for line
-		for (int i=0; i<2; ++i){
-			text[i].setFont(font);
-			text[i].setCharacterSize(40);
-			text[i].setPosition(sf::Vector2f(window->getSize().x / 2 - 75, i * 62 + 350));
-			text[i].setFillColor(sf::Color::Cyan);
-			text[i].setString(menu[i]);
+		texture.loadFromFile("logo.png");
+
+		sf::Sprite sprite(texture);
+		int i;
+
+		font.loadFromFile("Animated.ttf");
+		sprite.setPosition(sf::Vector2f(190, 100));
+
+
+		for (i = 0; i < 2; ++i) {
+			Button a(menu[i], { 220, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
+			a.set_position(sf::Vector2f(window->getSize().x / 2 + 140, i * 65 + 250));
+			a.set_font(font);
+			menu_button.push_back(a);
 		}
-		text[0].setFillColor(sf::Color::Red);
-		
-		int pos=0;
 
-		// for (int i=0; i<5; ++i){
-		// 	window->draw(text[i]);
-		// 
-
-		sf::Clock clock;
-		sf::Time time=sf::seconds(0.15f);
-		clock.restart().asSeconds();
 		while (window->isOpen()){
 			this->pollEvents();
-			for (int i=0; i<2; ++i){
-				window->draw(text[i]);
+			for (i = 0; i < 2; ++i){
+				menu_button[i].drawto(*window);
 			}
 
+			window->draw(sprite);
 			window->display();
 
-			if (clock.getElapsedTime()>=time){
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && pos>0){
-					text[pos].setFillColor(sf::Color::Cyan);
-					pos--;
-					text[pos].setFillColor(sf::Color::Red);
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				for (i = 0; i < 2; ++i) {
+					if (menu_button[i].isMouse(*window))
+						return i;
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<1){
-					text[pos].setFillColor(sf::Color::Cyan);
-					pos++;
-					text[pos].setFillColor(sf::Color::Red);
-				}
-				clock.restart().asSeconds();
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-				return pos;
+
+			for (i = 0; i < 2; ++i) {
+				menu_button[i].isMouse(*window);
 			}
+
+			window->clear();
 		}
 		return 1;
 	}
 
 	int drawLoseMenu(){
+
 		window->clear();
-		std::string menu[2]={"Yes", "No"};
+
+		std::string menu[2]={"Try again", "Quit"};
 		sf::Text text[2];
+		std::vector <Button> menu_button;
 		sf::Font font;
-		font.loadFromFile("arial.ttf");
+		sf::Texture texture;
 
-		//setup for line
-		for (int i=0; i<2; ++i){
-			text[i].setFont(font);
-			text[i].setCharacterSize(40);
-			text[i].setPosition(sf::Vector2f(window->getSize().x / 2 - 75, i * 62 + 350));
-			text[i].setFillColor(sf::Color::Cyan);
-			text[i].setString(menu[i]);
+		texture.loadFromFile("crashed.png");
+
+		sf::Sprite sprite(texture);
+		int i;
+
+		font.loadFromFile("Animated.ttf");
+		sprite.setPosition(sf::Vector2f(110, 150));
+
+		for (i = 0; i < 2; ++i) {
+			Button a(menu[i], { 220, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
+			a.set_position(sf::Vector2f(window->getSize().x / 2 + 160, i * 65 + 250));
+			a.set_font(font);
+			menu_button.push_back(a);
 		}
-		text[0].setFillColor(sf::Color::Red);
-		
-		int pos=0;
 
-		// for (int i=0; i<5; ++i){
-		// 	window->draw(text[i]);
-		// 
-
-		sf::Clock clock;
-		sf::Time time=sf::seconds(0.15f);
-		clock.restart().asSeconds();
 		while (window->isOpen()){
 			this->pollEvents();
-			for (int i=0; i<2; ++i){
-				window->draw(text[i]);
+			for (i = 0; i < 2; ++i){
+				menu_button[i].drawto(*window);
 			}
 
+			window->draw(sprite);
 			window->display();
 
-			if (clock.getElapsedTime()>=time){
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && pos>0){
-					text[pos].setFillColor(sf::Color::Cyan);
-					pos--;
-					text[pos].setFillColor(sf::Color::Red);
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				for (i = 0; i < 2; ++i) {
+					if (menu_button[i].isMouse(*window))
+						return i;
 				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && pos<1){
-					text[pos].setFillColor(sf::Color::Cyan);
-					pos++;
-					text[pos].setFillColor(sf::Color::Red);
-				}
-				clock.restart().asSeconds();
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-				return pos;
+
+			for (i = 0; i < 2; ++i) {
+				menu_button[i].isMouse(*window);
 			}
+
+			window->clear();
+			
 		}
 		return 1;
 	}
 };
+
+
+
 
 #endif // DEBUG
