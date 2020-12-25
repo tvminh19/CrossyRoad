@@ -1,9 +1,9 @@
 #include "Menu.h"
 
-int main(){
+int main() {
     Menu menu;
-    switch (menu.drawMenu()){
-    //newgame
+    switch (menu.drawMenu()) {
+        //newgame
     case 0:
         menu.newGame();
         break;
@@ -13,12 +13,16 @@ int main(){
     case 2:
         menu.rank();
         break;
-    case 4:
+    case 3:
         menu.music();
         break;
-    case 5:
+    case 4:
         menu.exit();
         break;
+    default:
+        break;
     }
+
     return 0;
 }
+
