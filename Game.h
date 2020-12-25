@@ -57,6 +57,8 @@ public:
 
         this->trafficlane->renderEnemies(window);
 
+        this->trafficlane->renderTrafficLight(window);
+
         window.display();
     }
 

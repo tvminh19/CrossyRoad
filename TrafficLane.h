@@ -5,6 +5,7 @@
 #include "Car.h"
 #include "Truck.h"
 #include "Dinasour.h"
+#include "TrafficLight.h"
 #include <ctime>
 
 class TrafficLane{
@@ -17,6 +18,8 @@ private:
     Truck* truck;
     Dinasour* dinasour;
 
+    std::vector<TrafficLight*> trafficLight;
+
     std::vector<Enemy*> enemies;
     std::vector<int> light;
 
@@ -28,8 +31,32 @@ private:
     int lane=0;
     bool traffic[5]={0,0,0,0,0};
 public:
+    TrafficLane(){
+        for (int i=0; i<5; ++i){
+            TrafficLight* tmp=new TrafficLight;
+            tmp->setPosition(
+                0,
+                static_cast<int>(i * (tmp->getShape().getSize().y + 70.f)) + 20.f
+            );
+            trafficLight.push_back(tmp);
+        }
+    }
+    ~TrafficLane(){
+        for (int i=0; i<enemies.size(); ++i){
+            delete enemies[i];
+        }
+        for (int i=0; i<5; ++i){
+            delete trafficLight[i];
+        }
+    }
 
     void update(sf::RenderWindow& window, int level){
+
+        for (int i=0; i<5; ++i){
+            this->trafficLight[i]->update(!canMove(i));
+        }
+
+
         if (this->enemies.size() < 10+level)
         {
             if (this->enemySpawnTimer >= this->enemySpawnTImerMax)
@@ -110,6 +137,14 @@ public:
         for (auto& e: this->enemies){
             window.draw(e->shape);
         }
+        // window.display();
+    }
+
+    void renderTrafficLight(sf::RenderWindow& window){
+        for (auto& e: this->trafficLight){
+            window.draw(e->getShape());
+        }
+        // window.display();
     }
 
     bool checkCollision(sf::FloatRect other){
