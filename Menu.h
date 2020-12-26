@@ -8,6 +8,8 @@
 #include <SFML/Audio.hpp>
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <algorithm>
 #include <sstream>
 
 //class TextBox {
@@ -407,8 +409,88 @@ public:
 	}
 
 	int rank(){
-		std::cout<<"rank.\n";
+		window->clear();
+		window->display();
+		//prepare
+		std::vector<std::string> info;
+		std::vector<int> theLevel;
+		std::vector<sf::Text> text;
+
+		//readfile
+		std::ifstream in;
+		in.open("user.txt");
+
+		//safe and read file
+		if (!in.is_open()){
+			this->window->close();
+		}
+		else{
+			std::string tmp;
+			int lv;
+			while (!in.eof()){
+				getline(in, tmp);
+				in>>lv;
+				in.ignore(10, '\n');
+				theLevel.push_back(lv);
+				info.push_back(tmp+" "+std::to_string(lv));
+			}
+		}
+		in.close();
+
+		//sort
+		for (int i=0; i<theLevel.size()-1; ++i){
+			for (int j=i+1; j<theLevel.size(); ++j){
+				if (theLevel.at(j)>theLevel.at(i)){
+					swap(theLevel.at(i), theLevel.at(j));
+					swap(info.at(i), info.at(j));
+				}
+			}
+		}
+
+		//display
+		for (int i=0; i<theLevel.size(); ++i){
+			sf::Text tex;
+			sf::Font font;
+			font.loadFromFile("Animated.ttf");
+			tex.setFont(font);
+			tex.setPosition(sf::Vector2f(
+				this->window->getSize().x/2,
+				50.f*i
+			));
+			tex.setString(info.at(i));
+			tex.setCharacterSize(40);
+
+			text.push_back(tex);
+		}
+
+		int n;
+		if (theLevel.size()>=5){
+			n=5;
+		}
+		else{
+			n=theLevel.size();	
+		}
+		
+		for (int i=0; i<n; ++i){
+			window->draw(text.at(i));
+		}
+
+		window->display();
+		
+		//press enter to exit
+		while (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+			return this->drawMenu();
+		}
+
 		return 0;
+	}
+
+	template<class T>
+	void swap(T& a, T& b){
+		T c;
+		c=a;
+		a=b;
+		b=c;
 	}
 
 	int music(){
@@ -565,4 +647,4 @@ public:
 
 
 
-#endif // DEBUG
+#endif 
