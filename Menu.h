@@ -11,6 +11,9 @@
 #include <fstream>
 #include <algorithm>
 #include <sstream>
+#include <fstream>
+
+
 
 //class TextBox {
 //private:
@@ -189,7 +192,7 @@ public:
 		this->bg_music = true;
 		this->sound_track.openFromFile("music.ogg"); 
 		this->sound_track.setPlayingOffset(sf::seconds(15.f));
-		this->sound_track.setVolume(10);
+		this->sound_track.setVolume(12);
 		this->sound_track.setLoop(true);
 		play_sound();
 	}
@@ -274,19 +277,30 @@ public:
 		return 4;
 	}
 
-	int newGame(){
+	int newGame(const int& level = 1){
+		this->game->setLevel(level);
 		int t = this->game->runGame(*window);
+		int lvl = this->game->getLevel();
 		delete game;
-		game=nullptr;
-		game=new Game;
+		game = new Game;
 		window->clear(sf::Color::Black);
 		window->display();
-		if (t==0){
+		if (t == 0){
+
 			int k = this->drawSubMenu();
-			if (k==0){
-				return this->newGame();
+			
+			if (k == 0){
+				
+				return this->newGame(lvl);
 			}
-			else if (k==1){
+
+			else if (k == 1)
+			{
+				return this->newGame(saveGame(lvl));
+			}
+
+			else if (k == 2){
+
 				switch (this->drawMenu()){
 				case 0:
 					return newGame();
@@ -306,12 +320,12 @@ public:
 				}
 			}
 		}
-		else if (t==-1){
+		else if (t == -1){
 			int k = drawLoseMenu();
-			if (k==0){
+			if (k == 0){
 				return this->newGame();
 			}
-			else if (k==1){
+			else if (k == 1){
 				switch (this->drawMenu()){
 				case 0:
 					return newGame();
@@ -331,15 +345,199 @@ public:
 				}
 			}
 		}
+
+		
 	}
 
-	void saveGame(){
+	int saveGame(const int& Level) {
+		window->clear();
 
+		sf::Texture texture;
+		sf::Font font;
+
+		texture.loadFromFile("logo.png");
+		font.loadFromFile("Animated.ttf");
+
+		std::ofstream out;
+		std::ifstream in;
+
+		sf::Sprite sprite(texture);
+		Button instruction("Enter your name", { 400, 50 }, 40, sf::Color::Green, sf::Color::Black);
+		Button input_box("", { 720, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
+		Button enter("Save", { 150, 50 }, 40, sf::Color::Green, sf::Color::Black);
+
+		std::string name = "";
+		sf::String sentence;
+		sf::Text text(sentence, font, 40);
+
+		text.setColor(sf::Color::Black);
+
+		sprite.setPosition(sf::Vector2f(360, 250));
+		instruction.set_position({ (float)350, (float)50 });
+		input_box.set_position_input({ (float)110, (float)140 });
+		enter.set_position({ (float)840, (float)140 });
+		text.setPosition({ (float)140, (float)140 });
+
+		instruction.set_font(font);
+		enter.set_font(font);
+
+		while (window->isOpen() && name.length() == 0)
+		{
+			sf::Event Event;
+			while (window->pollEvent(Event)) {
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				{
+					if (enter.isMouse(*window))
+					{
+						name = sentence.toAnsiString();
+						break;
+					}
+				}
+
+				if (Event.type == sf::Event::TextEntered) {
+					if (Event.text.unicode >= 32 && Event.text.unicode <= 126 && sentence.getSize() <= 36)
+						sentence += (char)Event.text.unicode;
+					else if (Event.text.unicode == 8 && sentence.getSize() > 0)
+						sentence.erase(sentence.getSize() - 1);
+					text.setString(sentence);
+				}
+
+			}
+
+			window->draw(sprite);
+			instruction.drawto(*window);
+			input_box.drawto(*window);
+			enter.drawto(*window);
+			enter.isMouse(*window);
+			window->draw(text);
+
+			window->display();
+			window->clear();
+		}
+
+		///// SAVING GOES HERE /////
+
+		in.open("load_list.txt", std::ios::in);
+
+		if (!in.is_open())
+			std::cout << "Coundn't open load file\n";
+		else
+		{
+			std::vector <std::pair<std::string, int>> list;
+			int level;
+			std::string info;
+			std::string account;
+			std::string lvl;
+			bool flag = 0;
+
+			while (!in.eof())
+			{
+				getline(in, info, '\n');
+
+				for (int i = 0; i < info.length(); ++i)
+				{
+					if (info[i] != ',')
+						account += info[i];
+					else
+					{
+						lvl += info[i + 1];
+						level = stoi(lvl);
+						break;
+					}
+				}
+
+				if (account == name)
+				{
+					flag = 1;
+					level = Level;
+				}
+				
+				std::pair<std::string, int> a(account, level);
+				list.push_back(a);
+
+				account.clear();
+				lvl.clear();
+				info.clear();
+			}
+
+			in.close();
+
+			if (flag == 1)
+				out.open("load_list.txt");
+			else
+				out.open("load_list.txt", std::ios::app);
+
+			if (!out.is_open())
+				std::cout << "Coundn't open load file\n";
+			else
+			{
+				if (flag == 1)
+				{
+					for (auto it = list.begin(); it != list.end(); ++it)
+						out << it->first << "," << it->second << '\n';
+				}
+				else
+				{
+					out << name << "," << Level << '\n';
+				}
+				out.close();
+			}
+			
+			return Level;
+		}
+		return 1;
 	}
 
 	int loadLevel(const sf::String& name)
 	{
+		std::ifstream in;
+		std::ofstream out;
+		std::string account;
+		std::string info;
+		std::string lvl;
+		int level = 1;
 
+		in.open("load_list.txt", std::ios::in);
+
+		if (!in.is_open())
+			std::cout << "Coundn't open load file\n";
+		else
+		{
+			while (!in.eof())
+			{
+				getline(in, info, '\n');
+
+				for (int i = 0; i < info.length(); ++i)
+				{
+					if (info[i] != ',')
+						account += info[i];
+					else if (info[i] == ',' && account == name)
+					{
+						lvl += info[i + 1];
+						level = stoi(lvl);
+						in.close();
+						return level;
+					}
+				}
+
+				account.clear();
+			}
+
+			in.close();
+		}
+
+		out.open("load_list.txt", std::ios::app);
+		if (!out.is_open())
+			std::cout << "Coundn't open load file\n";
+		else
+		{
+			out << "autosave," << 1 << '\n';
+			out.close();
+		}
+		std::cout << "Load account is not existing! Created auto load account!\n";
+
+		return level;
 	}
 
 	int loadGame(){
@@ -386,7 +584,7 @@ public:
 				}
 
 				if (Event.type == sf::Event::TextEntered) {
-					if (Event.text.unicode >= 32 && Event.text.unicode <= 126 && sentence.getSize() <= 40)
+					if (Event.text.unicode >= 32 && Event.text.unicode <= 126 && sentence.getSize() <= 36)
 						sentence += (char)Event.text.unicode;
 					else if (Event.text.unicode == 8 && sentence.getSize() > 0)
 						sentence.erase(sentence.getSize() - 1);
@@ -405,7 +603,7 @@ public:
 			window->display();
 			window->clear();
 		}
-		return 1;
+		return newGame(loadLevel(name));
 	}
 
 	int rank(){
@@ -525,7 +723,7 @@ public:
 
 	int drawSubMenu(){
 		window->clear();
-		std::string menu[2]={"Resume", "Exit"};
+		std::string menu[3]={"Resume", "Save game", "Exit"};
 		sf::Text text[2];
 		std::vector <Button> menu_button;
 		sf::Font font;
@@ -540,8 +738,8 @@ public:
 		sprite.setPosition(sf::Vector2f(190, 100));
 
 
-		for (i = 0; i < 2; ++i) {
-			Button a(menu[i], { 150, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
+		for (i = 0; i < 3; ++i) {
+			Button a(menu[i], { 200, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
 			a.set_position(sf::Vector2f(window->getSize().x / 2 + 110, i * 65 + 250));
 			a.set_font(font);
 			menu_button.push_back(a);
@@ -549,7 +747,7 @@ public:
 
 		while (window->isOpen()){
 			this->pollEvents();
-			for (i = 0; i < 2; ++i){
+			for (i = 0; i < 3; ++i){
 				menu_button[i].drawto(*window);
 			}
 
@@ -558,13 +756,13 @@ public:
 
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				for (i = 0; i < 2; ++i) {
+				for (i = 0; i < 3; ++i) {
 					if (menu_button[i].isMouse(*window))
 						return i;
 				}
 			}
 
-			for (i = 0; i < 2; ++i) {
+			for (i = 0; i < 3; ++i) {
 				menu_button[i].isMouse(*window);
 			}
 
