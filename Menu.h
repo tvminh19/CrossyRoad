@@ -285,7 +285,7 @@ public:
 		window->display();
 		if (t == 0){
 
-			int k = this->drawSubMenu();
+			int k = this->drawSubMenu(lvl);
 			
 			if (k == 0){
 				
@@ -639,13 +639,16 @@ public:
         }
     }
 
-	int drawSubMenu(){
+	int drawSubMenu(const int& currentLevel){
 		window->clear();
-		std::string menu[3]={"Resume", "Save game", "Exit"};
+		std::string menu[3] = {"Resume", "Save game", "Exit"};
 		sf::Text text[2];
 		std::vector <Button> menu_button;
 		sf::Font font;
 		sf::Texture texture;
+		std::string curLevel = "Current level: " + std::to_string(currentLevel);
+		Button level(curLevel, { 600, 70 }, 60, sf::Color::Cyan, sf::Color::Black);
+
 
 		texture.loadFromFile("logo.png");
 
@@ -654,6 +657,8 @@ public:
 
 		font.loadFromFile("Animated.ttf");
 		sprite.setPosition(sf::Vector2f(190, 100));
+		level.set_position({ 250, 80 });
+		level.set_font(font);
 
 
 		for (i = 0; i < 3; ++i) {
@@ -668,7 +673,7 @@ public:
 			for (i = 0; i < 3; ++i){
 				menu_button[i].drawto(*window);
 			}
-
+			level.drawto(*window);
 			window->draw(sprite);
 			window->display();
 
