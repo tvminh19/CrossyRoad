@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include <vector>
+#include <iostream>
 #include "TrafficLane.h"
 
 class Game{
@@ -25,15 +26,16 @@ private:
         this->isRunning=false;
     }
 
-    int level=1;
+    int level;
 
-    bool isPause=false;
+    bool isPause = false;
 
-    bool win=false;
+    bool win = false;
 public:
 
     //constructor & Destructor
     Game(){
+        level = 1;
         this->initVars();
     }
 
@@ -63,9 +65,9 @@ public:
     }
 
     bool isWin(){
-        if (this->player->getShape().getPosition().y==10){
+        if (this->player->getShape().getPosition().y == 10){
             level++;
-            this->win=true;
+            this->win = true;
             return true;
         }
         return false;
@@ -100,11 +102,11 @@ public:
                 window.clear(sf::Color::Black);
                 this->drawWin(window);
                 sf::Clock clock;
-                int t=3;
+                int t = 3;
                 clock.restart().asSeconds();
                 while (1){
                     if (clock.getElapsedTime()>sf::seconds(t)){
-                        win=false;
+                        win = false;
                         break;
                     }
                 }
@@ -143,8 +145,8 @@ public:
     }
 
     //set & get level
-    void setLevel(int _level){
-        level=_level;
+    void setLevel(const int& _level){
+        level = _level;
     }
 
     int getLevel(){
@@ -154,12 +156,12 @@ public:
     void drawWin(sf::RenderWindow& window){
         sf::Text text;
         sf::Font font;
-        font.loadFromFile("arial.ttf");
+        font.loadFromFile("Animated.ttf");
         text.setFont(font);
-        text.setString("Next Level:" + std::to_string(level));
+        text.setString("Next level: " + std::to_string(level));
         text.setFillColor(sf::Color::Cyan);
-        text.setCharacterSize(60);
-        text.setPosition(350,300);
+        text.setCharacterSize(100);
+        text.setPosition(300, 280);
         text.setStyle(sf::Text::Bold);
 
         window.draw(text);
