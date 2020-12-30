@@ -306,7 +306,11 @@ public:
 				return this->newGame(saveGame(lvl));
 			}
 
-			else if (k == 3){
+			else if (k == 2) {
+				return this->newGame(loadGame());
+			}
+
+			else if (k == 4){
 
 				switch (this->drawMenu()){
 				case 0:
@@ -322,7 +326,7 @@ public:
 					return music();
 					break;
 				case 4:
-					return exit();
+					return exit_game();
 					break;
 				}
 			}
@@ -347,7 +351,7 @@ public:
 					return music();
 					break;
 				case 4:
-					return exit();
+					return exit_game();
 					break;
 				}
 			}
@@ -370,7 +374,7 @@ public:
 
 		sf::Sprite sprite(texture);
 		Button instruction("Enter your name", { 400, 50 }, 40, sf::Color::Green, sf::Color::Black);
-		Button input_box("", { 720, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
+		Button input_box("", { 690, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
 		Button enter("Save", { 150, 50 }, 40, sf::Color::Green, sf::Color::Black);
 
 		std::string name = "";
@@ -381,7 +385,7 @@ public:
 
 		sprite.setPosition(sf::Vector2f(360, 250));
 		instruction.set_position({ (float)350, (float)50 });
-		input_box.set_position_input({ (float)110, (float)140 });
+		input_box.set_position_input({ (float)125, (float)140 });
 		enter.set_position({ (float)840, (float)140 });
 		text.setPosition({ (float)140, (float)140 });
 
@@ -563,7 +567,7 @@ public:
 
 		sf::Sprite sprite(texture);
 		Button instruction("Enter your name", { 400, 50 }, 40, sf::Color::Green, sf::Color::Black);
-		Button input_box("", { 720, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
+		Button input_box("", { 690, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
 		Button enter("Load", { 150, 50 }, 40, sf::Color::Green, sf::Color::Black);
 
 		std::string name = "";
@@ -574,7 +578,7 @@ public:
 
 		sprite.setPosition(sf::Vector2f(360, 250));
 		instruction.set_position({(float)350, (float)50});
-		input_box.set_position_input({ (float)110, (float)140 });
+		input_box.set_position_input({ (float)125, (float)140 });
 		enter.set_position({ (float)840, (float)140 });
 		text.setPosition({ (float)140, (float)140 });
 
@@ -708,8 +712,11 @@ public:
 		return 0;
 	}
 
-	int exit(){
-		std::cout<<"exit.\n";
+	int exit_game(){
+		std::cout<<"GAME EXIT!!!\n";
+		window->close();
+		this->~Menu();
+		exit(0);
 		return 0;
 	}
 
@@ -735,7 +742,7 @@ public:
 
 	int drawSubMenu(const int& currentLevel){
 		window->clear();
-		std::string menu[4] = {"Resume", "Save game", "Music: ON", "Exit"};
+		std::string menu[5] = {"Resume", "Save game", "Load game", "Music: ON", "Exit"};
 		sf::Text text[2];
 		std::vector <Button> menu_button;
 		sf::Font font;
@@ -750,7 +757,7 @@ public:
 		int i;
 
 		font.loadFromFile("Animated.ttf");
-		sprite.setPosition(sf::Vector2f(190, 100));
+		sprite.setPosition(sf::Vector2f(242, 100));
 		level.set_position({ 250, 80 });
 		level.set_font(font);
 
@@ -758,16 +765,16 @@ public:
 		sf::Time time = sf::seconds(0.10f);
 		clock.restart().asSeconds();
 
-		for (i = 0; i < 4; ++i) {
+		for (i = 0; i < 5; ++i) {
 			Button a(menu[i], { 200, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
-			a.set_position(sf::Vector2f(window->getSize().x / 2 + 110, i * 65 + 235));
+			a.set_position(sf::Vector2f(window->getSize().x / 2 + 110, i * 65 + 220));
 			a.set_font(font);
 			menu_button.push_back(a);
 		}
 
 		while (window->isOpen()){
 			this->pollEvents();
-			for (i = 0; i < 4; ++i){
+			for (i = 0; i < 5; ++i){
 				menu_button[i].drawto(*window);
 			}
 
@@ -778,10 +785,10 @@ public:
 			if (clock.getElapsedTime() >= time) {
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				{
-					for (i = 0; i < 4; ++i) {
+					for (i = 0; i < 5; ++i) {
 						if (menu_button[i].isMouse(*window))
 						{
-							if (i == 2)
+							if (i == 3)
 								menu_button[i].set_string(set_sound());
 							else
 								return i;
@@ -790,7 +797,7 @@ public:
 				}
 			}
 
-			for (i = 0; i < 4; ++i) {
+			for (i = 0; i < 5; ++i) {
 				menu_button[i].isMouse(*window);
 			}
 
@@ -857,6 +864,7 @@ public:
 	//////////////////// SOUND MANIPULATE ////////////////////
 	std::string set_sound()
 	{
+		sf::sleep(sf::seconds(0.105));
 		bg_music = !bg_music;
 		play_sound();
 		if (bg_music) {

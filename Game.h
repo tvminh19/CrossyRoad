@@ -141,7 +141,10 @@ public:
                 return -1;
             }
         }
-        return 999;
+
+        this->~Game();
+
+        return 10;
     }
 
     //set & get level
