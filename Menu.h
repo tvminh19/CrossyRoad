@@ -221,6 +221,8 @@ public:
 		sf::Font font;
 		sf::Texture texture;
 
+		if (!bg_music) menu[3] = "Music: OFF";
+
 		texture.loadFromFile("logo.png");
 
 		sf::Sprite sprite(texture);
@@ -238,7 +240,7 @@ public:
 		}
 
 		sf::Clock clock;
-		sf::Time time = sf::seconds(0.06f);
+		sf::Time time = sf::seconds(0.10f);
 		clock.restart().asSeconds();
 		
 		while (window->isOpen()){
@@ -278,28 +280,33 @@ public:
 	}
 
 	int newGame(const int& level = 1){
+
+		std::cout << "GAME STARTED!!!\n";
+
 		this->game->setLevel(level);
+
 		int t = this->game->runGame(*window);
 		int lvl = this->game->getLevel();
+
 		delete game;
 		game = new Game;
+
 		window->clear(sf::Color::Black);
 		window->display();
+
 		if (t == 0){
 
 			int k = this->drawSubMenu(lvl);
 			
 			if (k == 0){
-				
 				return this->newGame(lvl);
 			}
 
-			else if (k == 1)
-			{
+			else if (k == 1){
 				return this->newGame(saveGame(lvl));
 			}
 
-			else if (k == 2){
+			else if (k == 3){
 
 				switch (this->drawMenu()){
 				case 0:
@@ -431,9 +438,8 @@ public:
 			std::string lvl;
 			bool flag = 0;
 
-			while (!in.eof())
+			while (in >> info)
 			{
-				getline(in, info, '\n');
 
 				for (int i = 0; i < info.length(); ++i)
 				{
@@ -441,7 +447,9 @@ public:
 						account += info[i];
 					else
 					{
-						lvl += info[i + 1];
+						while (i + 1 < info.length())
+							lvl += info[++i];
+
 						level = stoi(lvl);
 						break;
 					}
@@ -483,7 +491,8 @@ public:
 				}
 				out.close();
 			}
-			
+			std::cout << "Saved account"<< " \"" << name << "\" " << "successfully!\n";
+
 			return Level;
 		}
 		return 1;
@@ -504,9 +513,8 @@ public:
 			std::cout << "Coundn't open load file\n";
 		else
 		{
-			while (!in.eof())
+			while (in >> info)
 			{
-				getline(in, info, '\n');
 
 				for (int i = 0; i < info.length(); ++i)
 				{
@@ -514,9 +522,12 @@ public:
 						account += info[i];
 					else if (info[i] == ',' && account == name)
 					{
-						lvl += info[i + 1];
+						while (i + 1 < info.length())
+							lvl += info[++i];
+
 						level = stoi(lvl);
 						in.close();
+						std::cout << "Loaded account" << " \"" << account << "\" " << "successfully!\n";
 						return level;
 					}
 				}
@@ -535,7 +546,8 @@ public:
 			out << "autosave," << 1 << '\n';
 			out.close();
 		}
-		std::cout << "Load account is not existing! Created auto load account!\n";
+
+		std::cout << "Load account is not existing! Loading autosave account!\n";
 
 		return level;
 	}
@@ -723,7 +735,7 @@ public:
 
 	int drawSubMenu(const int& currentLevel){
 		window->clear();
-		std::string menu[3] = {"Resume", "Save game", "Exit"};
+		std::string menu[4] = {"Resume", "Save game", "Music: ON", "Exit"};
 		sf::Text text[2];
 		std::vector <Button> menu_button;
 		sf::Font font;
@@ -742,32 +754,43 @@ public:
 		level.set_position({ 250, 80 });
 		level.set_font(font);
 
+		sf::Clock clock;
+		sf::Time time = sf::seconds(0.10f);
+		clock.restart().asSeconds();
 
-		for (i = 0; i < 3; ++i) {
+		for (i = 0; i < 4; ++i) {
 			Button a(menu[i], { 200, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
-			a.set_position(sf::Vector2f(window->getSize().x / 2 + 110, i * 65 + 250));
+			a.set_position(sf::Vector2f(window->getSize().x / 2 + 110, i * 65 + 235));
 			a.set_font(font);
 			menu_button.push_back(a);
 		}
 
 		while (window->isOpen()){
 			this->pollEvents();
-			for (i = 0; i < 3; ++i){
+			for (i = 0; i < 4; ++i){
 				menu_button[i].drawto(*window);
 			}
+
 			level.drawto(*window);
 			window->draw(sprite);
 			window->display();
 
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-			{
-				for (i = 0; i < 3; ++i) {
-					if (menu_button[i].isMouse(*window))
-						return i;
+			if (clock.getElapsedTime() >= time) {
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				{
+					for (i = 0; i < 4; ++i) {
+						if (menu_button[i].isMouse(*window))
+						{
+							if (i == 2)
+								menu_button[i].set_string(set_sound());
+							else
+								return i;
+						}
+					}
 				}
 			}
 
-			for (i = 0; i < 3; ++i) {
+			for (i = 0; i < 4; ++i) {
 				menu_button[i].isMouse(*window);
 			}
 
@@ -779,20 +802,23 @@ public:
 	int drawLoseMenu(){
 
 		window->clear();
+		std::cout << "CRASHED :((\n";
 
 		std::string menu[2]={"Try again", "Quit"};
 		sf::Text text[2];
+		sf::Text crash_text;
 		std::vector <Button> menu_button;
 		sf::Font font;
-		sf::Texture texture;
 
-		texture.loadFromFile("crashed.png");
-
-		sf::Sprite sprite(texture);
 		int i;
 
 		font.loadFromFile("Animated.ttf");
-		sprite.setPosition(sf::Vector2f(110, 150));
+
+		crash_text.setPosition(sf::Vector2f(140, 190));
+		crash_text.setFont(font);
+		crash_text.setString("CRASHED");
+		crash_text.setCharacterSize(165);
+		crash_text.setColor(sf::Color::Red);
 
 		for (i = 0; i < 2; ++i) {
 			Button a(menu[i], { 190, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
@@ -807,7 +833,7 @@ public:
 				menu_button[i].drawto(*window);
 			}
 
-			window->draw(sprite);
+			window->draw(crash_text);
 			window->display();
 
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -833,8 +859,11 @@ public:
 	{
 		bg_music = !bg_music;
 		play_sound();
-		if (bg_music)
+		if (bg_music) {
+			std::cout << "Turning sound on!\n";
 			return "Music: ON";
+		}
+		std::cout << "Turning sound off!\n";
 		return "Music: OFF";
 	}
 
