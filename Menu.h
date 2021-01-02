@@ -465,8 +465,8 @@ public:
 					level = Level;
 				}
 				
-				std::pair<std::string, int> a(account, level);
-				list.push_back(a);
+				//std::pair<std::string, int> a(account, level);
+				list.push_back(make_pair(account, level));
 
 				account.clear();
 				lvl.clear();
@@ -478,7 +478,7 @@ public:
 			if (flag == 1)
 				out.open("load_list.txt");
 			else
-				out.open("load_list.txt", std::ios::app);
+				out.open("load_list.txt",  std::ios::app);
 
 			if (!out.is_open())
 				std::cout << "Coundn't open load file\n";
@@ -535,10 +535,8 @@ public:
 						return level;
 					}
 				}
-
 				account.clear();
 			}
-
 			in.close();
 		}
 
@@ -632,7 +630,7 @@ public:
 
 		//readfile
 		std::ifstream fin;
-		fin.open("user_rank.txt", std::ios::in);
+		fin.open("load_list.txt", std::ios::in);
 
 		//safe and read file
 		if (!fin.is_open()){
@@ -640,14 +638,31 @@ public:
 
 		}
 		else{
-			std::string tmp;
+			std::string info_line;
+			std::string acc;
+			std::string levell;
 			int lv;
-			while (!fin.eof()){
-				getline(fin, tmp, ',');
-				fin>>lv;
-				fin.ignore(10, '\n');
+			while (fin >> info_line)
+			{
+				for (int i = 0; i < info_line.length(); ++i)
+				{
+					if (info_line[i] != ',')
+						acc += info_line[i];
+					else
+					{
+						while (i + 1 < info_line.length())
+							levell += info_line[++i];
+
+						lv = stoi(levell);
+						break;
+					}
+				}
 				theLevel.push_back(lv);
-				info.push_back(tmp+" "+std::to_string(lv));
+				info.push_back(acc +" "+std::to_string(lv));
+
+				acc.clear();
+				levell.clear();
+				info_line.clear();
 			}
 		}
 		fin.close();
@@ -676,8 +691,10 @@ public:
 			));
 			tex.setString(info.at(i));
 			tex.setCharacterSize(40);
-			if(c--)
+			if(c>0){
 				window->draw(tex);
+				c--;
+			}
 		}
 
 		while(window->isOpen()){
