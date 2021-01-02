@@ -681,8 +681,26 @@ public:
 		}
 
 		while(window->isOpen()){
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-				return this->drawMenu();
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+				//return this->drawMenu();
+				switch (this->drawMenu()){
+				case 0:
+					return newGame();
+					break;
+				case 1:
+					return loadGame();
+					break;
+				case 2:
+					return rank();
+					break;
+				case 3:
+					return music();
+					break;
+				case 4:
+					return exit_game();
+					break;
+				}
+			}
 			window->display();
 		}
 
