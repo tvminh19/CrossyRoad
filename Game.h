@@ -142,8 +142,6 @@ public:
             }
         }
 
-        this->~Game();
-
         return 10;
     }
 

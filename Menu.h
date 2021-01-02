@@ -121,6 +121,14 @@ public:
 		text.setPosition(sf::Vector2f(x, y));
 	}
 
+	void set_position_2(const sf::Vector2f& pos)
+	{
+		button.setPosition(pos);
+		float x = (pos.x + button.getLocalBounds().width / 3) - (text.getLocalBounds().width / 2) - 40;
+		float y = (pos.y + button.getLocalBounds().height / 3) - (text.getLocalBounds().height / 2) - 15;
+		text.setPosition(sf::Vector2f(pos.x + 15, pos.y - 0.5));
+	}
+
 	void set_position_input(const sf::Vector2f& pos)
 	{
 		button.setPosition(pos);
@@ -233,8 +241,8 @@ public:
 		
 
 		for (i = 0; i < 5; ++i) {
-			Button a(menu[i], { 220, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
-			a.set_position({ (float)420 , (float)i * 60 + 350 });
+			Button a(menu[i], { 190, 50 }, 40, sf::Color::Cyan, sf::Color::Black);
+			a.set_position_2({ (float)450 , (float)i * 60 + 350 });
 			a.set_font(font);
 			menu_button.push_back(a);
 		}
@@ -598,7 +606,7 @@ public:
 				}
 
 				if (Event.type == sf::Event::TextEntered) {
-					if (Event.text.unicode >= 32 && Event.text.unicode <= 126 && sentence.getSize() <= 36)
+					if (Event.text.unicode >= 32 && Event.text.unicode <= 126 && sentence.getSize() <= 18)
 						sentence += (char)Event.text.unicode;
 					else if (Event.text.unicode == 8 && sentence.getSize() > 0)
 						sentence.erase(sentence.getSize() - 1);
@@ -623,107 +631,109 @@ public:
 	}
 
 	int rank(){
-		window->clear();
-		window->display();
+		while (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) == false && window->isOpen()) {
+			window->clear();
+			//prepare
+			std::vector<std::string> info;
+			std::vector<int> theLevel;
+			std::vector<std::pair<Button, Button>> box;
+			std::vector<Button> num;
+			Button title("TOP 5 BEST PLAYER", { 658, 90 }, 80, sf::Color::Green, sf::Color::Black);
+			sf::Text esc;
+			sf::Font font;
+			int i;
 
-		//prepare
-		std::vector<std::string> info;
-		std::vector<int> theLevel;
+			esc.setString("Press Enter to return to Menu");
+			font.loadFromFile("Animated.ttf");
+			title.set_font(font);
+			esc.setFont(font);
+			esc.setColor(sf::Color::Cyan);
+			esc.setCharacterSize(40);
+			esc.setPosition(sf::Vector2f(310, 600));
+			title.set_position_2(sf::Vector2f(200, 50));
+			title.drawto(*window);
+			window->draw(esc);
 
-		//readfile
-		std::ifstream fin;
-		fin.open("load_list.txt", std::ios::in);
+			//readfile
+			std::ifstream fin;
+			fin.open("load_list.txt", std::ios::in);
 
-		//safe and read file
-		if (!fin.is_open()){
-			this->window->close();
+			//safe and read file
+			if (!fin.is_open()) {
+				this->window->close();
 
-		}
-		else{
-			std::string info_line;
-			std::string acc;
-			std::string levell;
-			int lv;
-			while (fin >> info_line)
-			{
-				for (int i = 0; i < info_line.length(); ++i)
+			}
+			else {
+				std::string info_line;
+				std::string acc;
+				std::string levell;
+				int lv;
+				while (fin >> info_line)
 				{
-					if (info_line[i] != ',')
-						acc += info_line[i];
-					else
+					for (i = 0; i < info_line.length(); ++i)
 					{
-						while (i + 1 < info_line.length())
-							levell += info_line[++i];
+						if (info_line[i] != ',')
+							acc += info_line[i];
+						else
+						{
+							while (i + 1 < info_line.length())
+								levell += info_line[++i];
 
-						lv = stoi(levell);
-						break;
+							lv = stoi(levell);
+							break;
+						}
+					}
+					theLevel.push_back(lv);
+					info.push_back(acc);
+
+					acc.clear();
+					levell.clear();
+					info_line.clear();
+				}
+				fin.close();
+			}
+			
+			//sort
+			for (i = 0; i < theLevel.size() - 1; ++i) {
+				for (int j = i + 1; j < theLevel.size(); ++j) {
+					if (theLevel.at(j) > theLevel.at(i)) {
+						swap(theLevel.at(i), theLevel.at(j));
+						swap(info.at(i), info.at(j));
 					}
 				}
-				theLevel.push_back(lv);
-				info.push_back(acc +" "+std::to_string(lv));
-
-				acc.clear();
-				levell.clear();
-				info_line.clear();
 			}
-		}
-		fin.close();
 
-		//sort
-		for (int i=0; i<theLevel.size()-1; ++i){
-			for (int j=i+1; j<theLevel.size(); ++j){
-				if (theLevel.at(j)>theLevel.at(i)){
-					swap(theLevel.at(i), theLevel.at(j));
-					swap(info.at(i), info.at(j));
+			//display
+			
+			for (i = 0; i < theLevel.size(); ++i) {
+				if (i < 5) {
+					Button context(info[i], { 420, 70 }, 60, sf::Color::Yellow, sf::Color::Black);
+					Button lvl(std::to_string(theLevel[i]), { 125, 70 }, 60, sf::Color::Yellow, sf::Color::Black);
+					Button n(std::to_string(i + 1), { 60, 70 }, 60, sf::Color::Yellow, sf::Color::Black);
+
+					context.set_font(font);
+					lvl.set_font(font);
+					n.set_font(font);
+					context.set_position_2(sf::Vector2f(285, 75 * (i + 1) + 110));
+					lvl.set_position_2(sf::Vector2f(730, 75 * (i + 1) + 110));
+					n.set_position_2(sf::Vector2f(200, 75 * (i + 1) + 110));
+
+					box.push_back(std::make_pair(context, lvl));
+					num.push_back(n);
+					
 				}
+				else break;
 			}
-		}
 
-		
-		//display
-		int c=5;
-		for (int i=0; i<theLevel.size(); ++i){
-			sf::Text tex;
-			sf::Font font;
-			font.loadFromFile("Animated.ttf");
-			tex.setFont(font);
-			tex.setPosition(sf::Vector2f(
-				this->window->getSize().x/2,
-				50.f*i
-			));
-			tex.setString(info.at(i));
-			tex.setCharacterSize(40);
-			if(c>0){
-				window->draw(tex);
-				c--;
-			}
-		}
-	// reup
-		while(window->isOpen()){
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-				//return this->drawMenu();
-				switch (this->drawMenu()){
-				case 0:
-					return newGame();
-					break;
-				case 1:
-					return loadGame();
-					break;
-				case 2:
-					return rank();
-					break;
-				case 3:
-					return music();
-					break;
-				case 4:
-					return exit_game();
-					break;
-				}
+			for (i = 0; i < box.size(); ++i) {
+				box[i].first.drawto(*window);
+				box[i].second.drawto(*window);
+				num[i].drawto(*window);
 			}
 			window->display();
 		}
 
-		return 0;
+		return this->drawMenu();
 	}
 
 	template<class T>
