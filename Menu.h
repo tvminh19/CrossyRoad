@@ -625,31 +625,32 @@ public:
 	int rank(){
 		window->clear();
 		window->display();
+
 		//prepare
 		std::vector<std::string> info;
 		std::vector<int> theLevel;
-		std::vector<sf::Text> text;
 
 		//readfile
-		std::ifstream in;
-		in.open("user.txt");
+		std::ifstream fin;
+		fin.open("user_rank.txt", std::ios::in);
 
 		//safe and read file
-		if (!in.is_open()){
+		if (!fin.is_open()){
 			this->window->close();
+
 		}
 		else{
 			std::string tmp;
 			int lv;
-			while (!in.eof()){
-				getline(in, tmp);
-				in>>lv;
-				in.ignore(10, '\n');
+			while (!fin.eof()){
+				getline(fin, tmp, ',');
+				fin>>lv;
+				fin.ignore(10, '\n');
 				theLevel.push_back(lv);
 				info.push_back(tmp+" "+std::to_string(lv));
 			}
 		}
-		in.close();
+		fin.close();
 
 		//sort
 		for (int i=0; i<theLevel.size()-1; ++i){
@@ -661,7 +662,9 @@ public:
 			}
 		}
 
+		
 		//display
+		int c=5;
 		for (int i=0; i<theLevel.size(); ++i){
 			sf::Text tex;
 			sf::Font font;
@@ -673,27 +676,14 @@ public:
 			));
 			tex.setString(info.at(i));
 			tex.setCharacterSize(40);
-
-			text.push_back(tex);
+			if(c--)
+				window->draw(tex);
 		}
 
-		int n;
-		if (theLevel.size()>=5){
-			n=5;
-		}
-		else{
-			n=theLevel.size();	
-		}
-		
-		for (int i=0; i<n; ++i){
-			window->draw(text.at(i));
-		}
-
-		window->display();
-		
-		//press enter to exit
-		while (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-			return this->drawMenu();
+		while(window->isOpen()){
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+				return this->drawMenu();
+			window->display();
 		}
 
 		return 0;

@@ -17,7 +17,7 @@ int main() {
         menu.music();
         break;
     case 4:
-        menu.exit();
+        menu.exit_game();
         break;
     default:
         break;
