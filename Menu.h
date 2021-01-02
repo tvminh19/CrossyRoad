@@ -617,6 +617,8 @@ public:
 			window->display();
 			window->clear();
 		}
+
+
 		return newGame(loadLevel(name));
 	}
 
@@ -774,7 +776,7 @@ public:
 		sf::Texture texture;
 		std::string curLevel = "Current level: " + std::to_string(currentLevel);
 		Button level(curLevel, { 600, 70 }, 60, sf::Color::Cyan, sf::Color::Black);
-
+		if (!bg_music) menu[3] = "Music: OFF";
 
 		texture.loadFromFile("logo.png");
 
@@ -889,7 +891,7 @@ public:
 	//////////////////// SOUND MANIPULATE ////////////////////
 	std::string set_sound()
 	{
-		sf::sleep(sf::seconds(0.105));
+		sf::sleep(sf::seconds(0.175));
 		bg_music = !bg_music;
 		play_sound();
 		if (bg_music) {
