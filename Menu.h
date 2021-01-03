@@ -638,7 +638,7 @@ public:
 			std::vector<int> theLevel;
 			std::vector<std::pair<Button, Button>> box;
 			std::vector<Button> num;
-			Button title("TOP 5 BEST PLAYER", { 658, 90 }, 80, sf::Color::Green, sf::Color::Black);
+			Button title("TOP 5 BEST PLAYERS", { 688, 90 }, 80, sf::Color::Green, sf::Color::Black);
 			sf::Text esc;
 			sf::Font font;
 			int i;
@@ -694,11 +694,13 @@ public:
 			}
 			
 			//sort
-			for (i = 0; i < theLevel.size() - 1; ++i) {
-				for (int j = i + 1; j < theLevel.size(); ++j) {
-					if (theLevel.at(j) > theLevel.at(i)) {
-						swap(theLevel.at(i), theLevel.at(j));
-						swap(info.at(i), info.at(j));
+			if (theLevel.size()) {
+				for (i = 0; i < theLevel.size() - 1; ++i) {
+					for (int j = i + 1; j < theLevel.size(); ++j) {
+						if (theLevel.at(j) > theLevel.at(i)) {
+							swap(theLevel.at(i), theLevel.at(j));
+							swap(info.at(i), info.at(j));
+						}
 					}
 				}
 			}
@@ -707,15 +709,15 @@ public:
 			
 			for (i = 0; i < theLevel.size(); ++i) {
 				if (i < 5) {
-					Button context(info[i], { 420, 70 }, 60, sf::Color::Yellow, sf::Color::Black);
-					Button lvl(std::to_string(theLevel[i]), { 125, 70 }, 60, sf::Color::Yellow, sf::Color::Black);
+					Button context(info[i], { 450, 70 }, 60, sf::Color::Yellow, sf::Color::Black);
+					Button lvl(std::to_string(theLevel[i]), { 128, 70 }, 60, sf::Color::Yellow, sf::Color::Black);
 					Button n(std::to_string(i + 1), { 60, 70 }, 60, sf::Color::Yellow, sf::Color::Black);
 
 					context.set_font(font);
 					lvl.set_font(font);
 					n.set_font(font);
 					context.set_position_2(sf::Vector2f(285, 75 * (i + 1) + 110));
-					lvl.set_position_2(sf::Vector2f(730, 75 * (i + 1) + 110));
+					lvl.set_position_2(sf::Vector2f(760, 75 * (i + 1) + 110));
 					n.set_position_2(sf::Vector2f(200, 75 * (i + 1) + 110));
 
 					box.push_back(std::make_pair(context, lvl));
