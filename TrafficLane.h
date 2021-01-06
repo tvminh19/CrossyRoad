@@ -11,7 +11,7 @@
 class TrafficLane{
 private:
     float enemySpawnTimer=20.f;
-    float enemySpawnTImerMax=20.f;
+    float timeForSpawnEnemy=20.f;
 
     Bird* bird;
     Car* car;
@@ -51,15 +51,14 @@ public:
     }
 
     void update(sf::RenderWindow& window, int level){
-
+        //update traffic light
         for (int i=0; i<5; ++i){
             this->trafficLight[i]->update(!canMove(i));
         }
 
-
         if (this->enemies.size() < 10+level)
         {
-            if (this->enemySpawnTimer >= this->enemySpawnTImerMax)
+            if (this->enemySpawnTimer >= this->timeForSpawnEnemy)
             {   
                 this->spawnEnemy(window);
                 this->enemySpawnTimer = 0.f;
@@ -70,18 +69,17 @@ public:
 
         for (int i = 0; i < enemies.size(); ++i) {
             enemies[i]->setSpeed(float(5+level),0.f);
-            if (clock.getElapsedTime()>sf::seconds(1+rand()%5)){ //TODO
+            //time for swich traffic light
+            if (clock.getElapsedTime()>=sf::seconds(1+rand()%5)){ //TODO
                 srand(time(NULL));
                 for (int i=0; i<5; ++i){
                     traffic[i]=rand()%2;
                 }
                 clock.restart();
             }
-
-
-
             if (canMove(light[i]))
                 enemies[i]->update();//TODO
+            //out of screen
             if (enemies[i]->shape.getPosition().x > window.getSize().x) {
                 this->enemies.erase(this->enemies.begin() + i);
                 this->light.erase(this->light.begin() + i);
@@ -90,10 +88,8 @@ public:
     }
 
     bool canMove(int _lane){
-        for (int i=0; i<5; ++i){
-            if (traffic[_lane]==1){
-                return false;
-            }
+        if (traffic[_lane]==1){
+            return false;
         }
         return true;
     }

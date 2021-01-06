@@ -11,6 +11,8 @@ public:
         shape.setFillColor(sf::Color::Red);
     }
 
+
+    //change color
     void update(bool canMove){
         if (canMove && shape.getFillColor()==sf::Color::Green){
             shape.setFillColor(sf::Color::Red);

@@ -26,7 +26,7 @@ private:
         this->isRunning=false;
     }
 
-    int level;
+    int level=1;
 
     bool isPause = false;
 
@@ -45,8 +45,10 @@ public:
     }
 
     void update(sf::RenderWindow& window){
+        //Esc 
         this->pollEvents(window);
 
+        //update start position
         this->player->update(window);
 
         this->trafficlane->update(window, level);
