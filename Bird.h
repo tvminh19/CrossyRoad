@@ -6,20 +6,9 @@ class Bird: public Enemy{
 private:
     //
 public:
-    Bird(){
-        // this->shape.setPosition(50.0f, 50.0f);
-	    this->shape.setSize(sf::Vector2f(100.0f, 100.0f));
-	    // this->shape.setFillColor(sf::Color::Cyan);
-    }
+    Bird();
 
-    void update(){
-        time=clock.restart().asSeconds();
-        this->shape.move(speed.x, speed.y);
-        this->texture.loadFromFile("bird.png");
-        this->shape.setTexture(&texture);
-        this->texture.setSmooth(true);
-    }
-
+    void update();
 };
 
 #endif
