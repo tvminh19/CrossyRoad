@@ -6,33 +6,17 @@ class TrafficLight{
 private:
     sf::RectangleShape shape;
 public:
-    TrafficLight(){
-        shape.setSize(sf::Vector2f(50.f,50.f));
-        shape.setFillColor(sf::Color::Red);
-    }
+    TrafficLight();
 
 
     //change color
-    void update(bool canMove){
-        if (canMove && shape.getFillColor()==sf::Color::Green){
-            shape.setFillColor(sf::Color::Red);
-        }
-        else if (!canMove && shape.getFillColor()==sf::Color::Red){
-            shape.setFillColor(sf::Color::Green);
-        }
-    }
+    void update(bool canMove);
 
-    void render(sf::RenderWindow& window){
-        window.draw(shape);
-    }
+    void render(sf::RenderWindow& window);
 
-    void setPosition(float x, float y){
-        this->shape.setPosition(sf::Vector2f(x,y));
-    }
+    void setPosition(float x, float y);
 
-    sf::RectangleShape getShape(){
-        return this->shape;
-    }
+    sf::RectangleShape getShape();
 
 };
 
