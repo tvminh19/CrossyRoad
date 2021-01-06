@@ -13,16 +13,10 @@ public:
     float time;
     sf::Clock clock;
 
-    sf::RectangleShape getShape(){
-        return this->shape;
-    }
-
+    sf::RectangleShape getShape();
     virtual void update()=0;
     
-    void setSpeed(float x, float y){
-        speed.x=x;
-        speed.y=y;
-    }
+    void setSpeed(float x, float y);
 };
 
 #endif
