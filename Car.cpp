@@ -1,6 +1,6 @@
 #include "Car.h"
 
-public: Car::Car() {
+Car::Car() {
     this->shape.setSize(sf::Vector2f(200.0f, 100.0f));
     this->texture.loadFromFile("car.png");
     this->shape.setTexture(&texture);
