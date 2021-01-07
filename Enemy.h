@@ -7,14 +7,15 @@ class Enemy{
 protected:
     sf::Vector2f speed;
     sf::Music sound;
-public:
+
     sf::Sprite sprite;
     sf::RectangleShape shape;
     sf::Texture texture;
     
     float time;
     sf::Clock clock;
-
+    friend class TrafficLane;
+public:
     sf::RectangleShape getShape();
     virtual void update()=0;
     
