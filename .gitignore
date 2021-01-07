@@ -342,6 +342,6 @@ healthchecksdb
 *.h.gch
 *.pdf
 .vs
-*.exe
+
 .vscode
 *.out
