@@ -116,6 +116,7 @@ void TrafficLane::renderTrafficLight(sf::RenderWindow& window) {
 bool TrafficLane::checkCollision(sf::FloatRect other) {
     for (auto& e : this->enemies){
         if (e->shape.getGlobalBounds().intersects(other)){
+            e->makeSound();
             return true; //TODO
             // return false;
         }

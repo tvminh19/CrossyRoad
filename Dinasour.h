@@ -10,6 +10,7 @@ public:
     
     void update();
 
+    void makeSound();
 };
 
 #endif

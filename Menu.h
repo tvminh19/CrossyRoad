@@ -13,8 +13,6 @@
 #include <sstream>
 #include <fstream>
 
-
-
 //class TextBox {
 //private:
 //	sf::Text textbox;

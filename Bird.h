@@ -9,6 +9,8 @@ public:
     Bird();
 
     void update();
+
+    void makeSound();
 };
 
 #endif

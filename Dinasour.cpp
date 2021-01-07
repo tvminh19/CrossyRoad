@@ -8,9 +8,16 @@ Dinasour::Dinasour() {
     this->texture.loadFromFile("dinasour.png");
     this->shape.setTexture(&texture);
     this->texture.setSmooth(true);
+    sound.openFromFile("dinosaur.ogg");
 }
 
 void Dinasour::update() {
     time=clock.restart().asSeconds();
     this->shape.move(speed.x, speed.y);
+}
+
+void Dinasour::makeSound()
+{
+    sound.play();   
+    sf::sleep(sf::seconds(2.5)); 
 }

@@ -8,9 +8,16 @@ Truck::Truck() {
     this->texture.loadFromFile("Truck.png");
     this->texture.setSmooth(true);
     this->shape.setTexture(&texture);
+    sound.openFromFile("truck.ogg");
 }
 
 void Truck::update() {
     time=clock.restart().asSeconds();
     this->shape.move(speed.x, speed.y);
+}
+
+void Truck::makeSound()
+{
+    sound.play();
+    sf::sleep(sf::seconds(3.5));
 }
