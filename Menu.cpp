@@ -92,7 +92,7 @@ Menu::Menu()
 	this->initWindow();
 	//Background music
 	this->bg_music = true;
-	this->sound_track.openFromFile("music.ogg");
+	this->sound_track.openFromFile("sound/music.ogg");
 	this->sound_track.setPlayingOffset(sf::seconds(15.f));
 	this->sound_track.setVolume(12);
 	this->sound_track.setLoop(true);
@@ -117,12 +117,12 @@ int Menu::drawMenu()
 
 	if (!bg_music) menu[3] = "Music: OFF";
 
-	texture.loadFromFile("logo.png");
+	texture.loadFromFile("src/logo.png");
 
 	sf::Sprite sprite(texture);
 	int i;
 
-	font.loadFromFile("Animated.ttf");
+	font.loadFromFile("src/Animated.ttf");
 	sprite.setPosition(sf::Vector2f(360, 10));
 
 
@@ -255,8 +255,8 @@ int Menu::saveGame(const int& Level)
 	sf::Texture texture;
 	sf::Font font;
 
-	texture.loadFromFile("logo.png");
-	font.loadFromFile("Animated.ttf");
+	texture.loadFromFile("src/logo.png");
+	font.loadFromFile("src/Animated.ttf");
 
 	std::ofstream out;
 	std::ifstream in;
@@ -398,8 +398,8 @@ int Menu::loadGame()
 	sf::Texture texture;
 	sf::Font font;
 
-	texture.loadFromFile("logo.png");
-	font.loadFromFile("Animated.ttf");
+	texture.loadFromFile("src/logo.png");
+	font.loadFromFile("src/Animated.ttf");
 
 	sf::Sprite sprite(texture);
 	Button instruction("Enter your name", { 400, 50 }, 40, sf::Color::Green, sf::Color::Black);
@@ -475,7 +475,7 @@ int Menu::rank()
 		int i;
 
 		esc.setString("Press Enter to return to Menu");
-		font.loadFromFile("Animated.ttf");
+		font.loadFromFile("src/Animated.ttf");
 		title.set_font(font);
 		esc.setFont(font);
 		esc.setColor(sf::Color::Cyan);
@@ -625,12 +625,12 @@ int Menu::drawSubMenu(const int& currentLevel)
 	Button level(curLevel, { 600, 70 }, 60, sf::Color::Cyan, sf::Color::Black);
 	if (!bg_music) menu[3] = "Music: OFF";
 
-	texture.loadFromFile("logo.png");
+	texture.loadFromFile("src/logo.png");
 
 	sf::Sprite sprite(texture);
 	int i;
 
-	font.loadFromFile("Animated.ttf");
+	font.loadFromFile("src/Animated.ttf");
 	sprite.setPosition(sf::Vector2f(242, 100));
 	level.set_position({ 250, 80 });
 	level.set_font(font);
@@ -693,7 +693,7 @@ int Menu::drawLoseMenu()
 
 	int i;
 
-	font.loadFromFile("Animated.ttf");
+	font.loadFromFile("src/Animated.ttf");
 
 	crash_text.setPosition(sf::Vector2f(140, 190));
 	crash_text.setFont(font);

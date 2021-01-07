@@ -124,7 +124,7 @@ int Game::getLevel(){
 void Game::drawWin(sf::RenderWindow& window){
     sf::Text text;
     sf::Font font;
-    font.loadFromFile("Animated.ttf");
+    font.loadFromFile("src/Animated.ttf");
     text.setFont(font);
     text.setString("Next level: " + std::to_string(level));
     text.setFillColor(sf::Color::Cyan);

@@ -1,8 +1,8 @@
 #include "TrafficLane.h"
 
 TrafficLane::TrafficLane() {
-    for (int i=0; i<5; ++i){
-        TrafficLight* tmp=new TrafficLight;
+    for (int i = 0; i < 5; ++i){
+        TrafficLight* tmp = new TrafficLight;
         tmp->setPosition(
             0,
             static_cast<int>(i * (tmp->getShape().getSize().y + 70.f)) + 20.f
@@ -12,17 +12,17 @@ TrafficLane::TrafficLane() {
 }
 
 TrafficLane::~TrafficLane() {
-    for (int i=0; i<enemies.size(); ++i){
+    for (int i = 0; i < enemies.size(); ++i){
         delete enemies[i];
     }
-    for (int i=0; i<5; ++i){
+    for (int i = 0; i < 5; ++i){
         delete trafficLight[i];
     }
 }
 
 void TrafficLane::update(sf::RenderWindow& window, int level) {
     //update traffic light
-    for (int i=0; i<5; ++i){
+    for (int i = 0; i < 5; ++i){
         this->trafficLight[i]->update(!canMove(i));
     }
 
@@ -34,16 +34,16 @@ void TrafficLane::update(sf::RenderWindow& window, int level) {
             this->enemySpawnTimer = 0.f;
         }
         else
-            this->enemySpawnTimer += 0.5f+float(level)/5;
+            this->enemySpawnTimer += 0.5f + float(level) / 5;
     }
 
     for (int i = 0; i < enemies.size(); ++i) {
-        enemies[i]->setSpeed(float(5+level),0.f);
+        enemies[i]->setSpeed(float(5+level), 0.f);
         //time for swich traffic light
-        if (clock.getElapsedTime()>=sf::seconds(1+rand()%5)){ //TODO
+        if (clock.getElapsedTime()>=sf::seconds(1 + rand()%5)){ //TODO
             srand(time(NULL));
-            for (int i=0; i<5; ++i){
-                traffic[i]=rand()%2;
+            for (int i = 0; i < 5; ++i){
+                traffic[i] = rand()%2;
             }
             clock.restart();
         }
@@ -58,34 +58,34 @@ void TrafficLane::update(sf::RenderWindow& window, int level) {
 }
 
 bool TrafficLane::canMove(int _lane) {
-    if (traffic[_lane]==1){
+    if (traffic[_lane] == 1){
         return false;
     }
     return true;
 }
 
 void TrafficLane::spawnEnemy(sf::RenderWindow& window) {
-    int k=rand()%5;
+    int k = rand() % 5;
 
-    if (k!=lane){
+    if (k != lane){
         lane=k;
-    }else if (k==lane){
-        lane=(k+1)%5;
+    }else if (k == lane){
+        lane=(k + 1) % 5;
     }
 
     if (canMove(lane)){
         int t = rand() % 4; 
-        Enemy* tmp=nullptr;
-        if (t==0){
+        Enemy* tmp = nullptr;
+        if (t == 0){
             tmp = new Bird;
         }
-        else if (t==1){
+        else if (t == 1){
             tmp = new Car;
         }
-        else if (t==2){
+        else if (t == 2){
             tmp = new Truck;
         }
-        else if (t==3){
+        else if (t == 3){
             tmp = new Dinasour;
         }
 

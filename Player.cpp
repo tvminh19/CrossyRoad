@@ -5,7 +5,7 @@ Player::Player() {
     // this->shape.setOutlineColor(sf::Color::Red);
     // this->shape.setFillColor(sf::Color::White);
     this->shape.setPosition(sf::Vector2f(540, 660));
-    this->texture.loadFromFile("frog.png");
+    this->texture.loadFromFile("src/frog.png");
     this->shape.setTexture(&texture);
     this->texture.setSmooth(true);
 }
@@ -15,7 +15,7 @@ void Player::init(){
     // this->shape.setOutlineColor(sf::Color::Red);
     // this->shape.setFillColor(sf::Color::White);
     this->shape.setPosition(sf::Vector2f(540, 660));
-    this->texture.loadFromFile("frog.png");
+    this->texture.loadFromFile("src/frog.png");
     this->shape.setTexture(&texture);
     this->texture.setSmooth(true);
 }

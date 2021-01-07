@@ -5,10 +5,10 @@ Truck::Truck() {
     // this->shape.setPosition(50.0f, 50.0f);
     this->shape.setSize(sf::Vector2f(200.0f, 100.0f));
     // this->shape.setFillColor(sf::Color::Green);
-    this->texture.loadFromFile("Truck.png");
+    this->texture.loadFromFile("src/Truck.png");
     this->texture.setSmooth(true);
     this->shape.setTexture(&texture);
-    sound.openFromFile("truck.ogg");
+    sound.openFromFile("sound/truck.ogg");
 }
 
 void Truck::update() {
@@ -18,6 +18,7 @@ void Truck::update() {
 
 void Truck::makeSound()
 {
+    sound.setLoop(0);
     sound.play();
-    sf::sleep(sf::seconds(3.5));
+    sf::sleep(sf::seconds(1.5f));
 }
