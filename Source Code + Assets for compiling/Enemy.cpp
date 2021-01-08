@@ -11,7 +11,6 @@ void Enemy::setSpeed(float x, float y) {
 }
 
 void Enemy::update() {
-    time = clock.restart().asSeconds();
     this->shape.move(speed.x, speed.y);
 }
 

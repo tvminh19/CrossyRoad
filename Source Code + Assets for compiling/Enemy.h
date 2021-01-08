@@ -11,8 +11,6 @@ protected:
     sf::RectangleShape shape;
     sf::Texture texture;
     
-    float time;
-    sf::Clock clock;
     friend class TrafficLane;
 public:
     sf::RectangleShape getShape();
