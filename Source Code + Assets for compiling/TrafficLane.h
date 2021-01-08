@@ -13,19 +13,11 @@ private:
     float enemySpawnTimer=20.f;
     float timeForSpawnEnemy=20.f;
 
-    Bird* bird;
-    Car* car;
-    Truck* truck;
-    Dinasour* dinasour;
-
     std::vector<TrafficLight*> trafficLight;
 
     std::vector<Enemy*> enemies;
     std::vector<int> light;
 
-    bool isRed=false;
-    int trafficTimeRed=3;
-    int trafficTimeGreen=5;
     sf::Clock clock;
 
     int lane=0;

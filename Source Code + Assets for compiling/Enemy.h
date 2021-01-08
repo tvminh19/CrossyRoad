@@ -8,7 +8,6 @@ protected:
     sf::Vector2f speed;
     sf::Music sound;
 
-    sf::Sprite sprite;
     sf::RectangleShape shape;
     sf::Texture texture;
     
