@@ -7,10 +7,6 @@ private:
     
 public:
     Car();
-
-    void update();
-
-    void makeSound();
 };
 
 #endif

@@ -10,15 +10,3 @@ Dinasour::Dinasour() {
     this->texture.setSmooth(true);
     sound.openFromFile("sound/dinosaur.ogg");
 }
-
-void Dinasour::update() {
-    time=clock.restart().asSeconds();
-    this->shape.move(speed.x, speed.y);
-}
-
-void Dinasour::makeSound()
-{
-    sound.setLoop(0);
-    sound.play();
-    sf::sleep(sf::seconds(1.5f));
-}

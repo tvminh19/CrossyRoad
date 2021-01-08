@@ -7,10 +7,6 @@ private:
     //
 public:
     Dinasour();
-    
-    void update();
-
-    void makeSound();
 };
 
 #endif

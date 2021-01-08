@@ -10,15 +10,3 @@ Bird::Bird() {
     // this->shape.setFillColor(sf::Color::Cyan);
     this->sound.openFromFile("sound/bird.ogg");
 }
-
-void Bird::update() {
-    time = clock.restart().asSeconds();
-    this->shape.move(speed.x, speed.y);
-}
-
-void Bird::makeSound()
-{
-    sound.setLoop(0);
-    sound.play();
-    sf::sleep(sf::seconds(1.5f));
-}

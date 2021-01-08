@@ -7,10 +7,6 @@ private:
     //
 public:
     Truck();
-
-    void update();
-
-    void makeSound();
 };
 
 #endif

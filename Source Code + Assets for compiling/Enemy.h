@@ -16,11 +16,11 @@ protected:
     friend class TrafficLane;
 public:
     sf::RectangleShape getShape();
-    virtual void update()=0;
+    void update();
     
     void setSpeed(float x, float y);
 
-    virtual void makeSound() = 0;
+    void makeSound();
 };
 
 #endif
